@@ -1,6 +1,6 @@
 <?php
 // loadRoutes.php
-<?php
+
 // loadRoutes.php
 
 // Usamos __DIR__ para asegurar que partimos desde donde está este archivo
