@@ -1,0 +1,13 @@
+{
+    "name": "tu-nombre/lendapp",
+    "description": "API LendApp",
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {}
+    }
+}
