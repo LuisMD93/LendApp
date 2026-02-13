@@ -1,0 +1,198 @@
+<?php
+
+namespace Infrastructure\Persistence\Repository;
+
+use Domain\Repository\IUserRepository;
+use Infrastructure\Persistence\Doctrine\Connection;
+use Domain\Models\User;
+use \PDO;
+use \Exception;
+
+class UsersRepository implements IUserRepository {
+
+
+    private $connection;
+
+    //Constructor con inyección de la dependencia (el objeto de conexión)
+    public function __construct(Connection $db) {
+        $db = Connection::getInstance();
+        $this->connection = $db->getConnection();
+    }
+    
+
+
+    function createUser(User $user) : bool{
+    
+        try{
+
+        $response = false;
+           
+            $this->connection->beginTransaction(); 
+            
+            $sql = "call add_user(:p_user_name_,:p_email_,:p_password_,:p_api_token_,:p_phone_)";
+            $stmt = $this->connection->prepare($sql);
+        
+                $name = $user->getUsername();
+                $email = $user->getEmail();
+                $pass = $user->getPassword();
+                $apiToken = $user->getApiToken();
+                $phon_cell = $user->getPhone();
+                      
+                $stmt->bindParam(':p_user_name_', $name, PDO::PARAM_STR);
+                $stmt->bindParam(':p_email_', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':p_password_', $pass, PDO::PARAM_STR);
+                $stmt->bindParam(':p_api_token_', $apiToken, PDO::PARAM_STR);
+                $stmt->bindParam(':p_phone_', $phon_cell, PDO::PARAM_STR);
+                
+        
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $this->connection->commit();
+                $response = true;
+            } else {
+                $this->connection->rollBack();
+            }
+         
+            return $response;
+            
+        } catch (Exception $e) {
+            $this->connection->rollBack();
+            echo "Error: " . $e->getMessage();
+        } finally {
+            return $response;
+            $this->connection = null;
+        }
+
+    }     
+
+    function  findUserById(int $userId) : bool{
+
+        $sql = "CALL search_User_by_Id(:userId)";
+        $stmt = $this->connection->prepare($sql);
+   
+         $stmt->bindParam(':userId',$userId, PDO::PARAM_STR);
+         $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;     
+
+    }
+
+    function getAllUsers() : array {
+
+        $sql = "call get_All_Users()";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+     function updateUser(User $user) : bool {
+
+        try {
+
+            $response = false;
+            
+            $this->connection->beginTransaction(); // Iniciar una transacción
+            
+            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_)"; 
+            $stmt = $this->connection->prepare($sql);    
+           
+            $id = $user->getId();
+            $user_name = $user->getUsername();
+            $new_password= $user->getPassword();
+            $new_email = $user->getEmail();
+            $new_api_token= $user->getApiToken();
+            $new_phone = $user->getPhone();
+
+        
+            $stmt->bindParam(':p_id_', $id);
+            $stmt->bindParam(':p_user_name_', $user_name);
+            $stmt->bindParam(':p_password_', $new_password);
+            $stmt->bindParam(':p_email_', $new_email);
+            $stmt->bindParam(':p_token_', $new_api_token);
+            $stmt->bindParam(':p_phone_', $new_phone);
+            
+            $stmt->execute();
+            
+            if ($stmt->rowCount() > 0) {
+                $this->connection->commit();
+                $response = true;
+            } else {
+                $this->connection->rollBack();
+            }
+             
+            return $response;
+            
+        } catch (Exception $e) {
+            $this->connection->rollBack();
+            echo "Error: " . $e->getMessage();
+        } finally {
+            return $response;
+            $this->connection = null;
+        }
+
+    } 
+
+    function searchUserByPhone(string $phone) : bool{
+        
+        $sql = "CALL search_by_phone_User(:p_phone)";
+        $stmt = $this->connection->prepare($sql);
+   
+         $stmt->bindParam(':p_phone',$phone, PDO::PARAM_STR);
+         $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
+    }
+
+    function deleteUserById(int $Id) : bool{
+
+        try{
+
+            $sql="CALL delete_by_id_Users(:id)";
+            $stmt = $this->connection->prepare($sql);
+
+            $stmt->bindParam(':id', $Id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+        } catch(Exception $e) {
+            
+            return false;
+        } finally {
+            $this->connection = null;
+        }
+    }
+    
+    function existsUser(string $email,string $phone) : bool{
+
+        $sql = "CALL exists_user(:p_email,:p_phone)";
+        $stmt = $this->connection->prepare($sql);
+   
+         $stmt->bindParam(':p_email',$email, PDO::PARAM_STR);         
+         $stmt->bindParam(':p_phone',$phone, PDO::PARAM_STR);
+         $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
+    
+    }
+
+    function login(string $user_name,string $phone) : array{
+
+        $sql = "CALL login_user(:p_user_name,:p_phone)";
+        $stmt = $this->connection->prepare($sql);
+   
+         $stmt->bindParam(':p_user_name',$user_name, PDO::PARAM_STR);         
+         $stmt->bindParam(':p_phone',$phone, PDO::PARAM_STR);
+         $stmt->execute();  
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: []; // devuelve array vacío si no hay resultado
+    
+    }
+
+
+}
