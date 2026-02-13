@@ -1,11 +1,11 @@
 FROM php:8.2-apache
 
-# 1. Instalar dependencias del sistema y extensiones de PHP para MySQL
+# 1. Instalar dependencias para PostgreSQL (Cambiamos libmariadb por libpq)
 RUN apt-get update && apt-get install -y \
-    libmariadb-dev \
-    && docker-php-ext-install pdo pdo_mysql
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# 2. Habilitar mod_rewrite de Apache (Esto ya lo tenías, mantenlo)
+# 2. Habilitar mod_rewrite de Apache
 RUN a2enmod rewrite
 
 # 3. Configurar el DocumentRoot a /public
