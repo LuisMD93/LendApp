@@ -8,7 +8,7 @@ class Router {
     public string $url;
     public array $queryParams;
     private array $headers;
-
+    /*
     public function __construct() {
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->queryParams = $_GET; // Esto captura todos los query params
@@ -20,6 +20,27 @@ class Router {
         $url = preg_replace('#/+#', '/', $url);
         $this->url = trim($url, '/');
         $this->headers = getallheaders();
+    }*/
+    public function __construct() {
+            $this->method = $_SERVER['REQUEST_METHOD'];
+            $this->queryParams = $_GET;
+
+            // 1. Obtenemos la URI completa (ej: /user o /LendApp/public/user)
+            $url = $_SERVER['REQUEST_URI'];
+            
+            // 2. Quitamos los parámetros de consulta (?id=1...)
+            $url = parse_url($url, PHP_URL_PATH);
+
+            // 3. ESTA ES LA CLAVE: Eliminamos el path del script actual (index.php) 
+            // de la URL. Esto quita automáticamente "/LendApp/public" en local 
+            // y no quita nada en Render porque ahí no existe esa carpeta.
+            $scriptName = dirname($_SERVER['SCRIPT_NAME']);
+            $url = str_replace($scriptName, '', $url);
+
+            // 4. Limpieza final: quitar slashes extras y dejarlo limpio
+            $this->url = trim($url, '/');
+            
+            $this->headers = getallheaders();
     }
 
 
