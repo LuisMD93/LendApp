@@ -76,13 +76,25 @@ class UsersRepository implements IUserRepository {
         return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;     
 
     }
-
+    /*
     function getAllUsers() : array {
 
         $sql = "call get_All_Users()";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    */
+
+    function getAllUsers() : array {
+        // En Postgres, las funciones que devuelven tablas se consultan con SELECT
+        $sql = "SELECT * FROM get_all_users()"; 
+    
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+    
+        // Retornamos los datos como un array asociativo
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
      function updateUser(User $user) : bool {
@@ -131,7 +143,7 @@ class UsersRepository implements IUserRepository {
         }
 
     } 
-
+    /*
     function searchUserByPhone(string $phone) : bool{
         
         $sql = "CALL search_by_phone_User(:p_phone)";
@@ -141,6 +153,22 @@ class UsersRepository implements IUserRepository {
          $stmt->execute();
         
         return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
+    }
+    */
+
+    function searchUserByPhone(string $phone) : bool {
+        // 1. En Postgres usamos SELECT para funciones que devuelven resultados
+        $sql = "SELECT id FROM search_by_phone_user(:p_phone)";
+    
+         $stmt = $this->connection->prepare($sql);
+         $stmt->bindParam(':p_phone', $phone, \PDO::PARAM_STR);
+         $stmt->execute();
+    
+        // 2. fetch() devuelve la fila encontrada o FALSE si no hay nada
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+        // Retornamos true si $result es un array (encontró algo), false si es boolean false
+        return $result !== false;
     }
 
     function deleteUserById(int $Id) : bool{
@@ -166,7 +194,7 @@ class UsersRepository implements IUserRepository {
             $this->connection = null;
         }
     }
-    
+    /*
     function existsUser(string $email,string $phone) : bool{
 
         $sql = "CALL exists_user(:p_email,:p_phone)";
@@ -175,10 +203,30 @@ class UsersRepository implements IUserRepository {
          $stmt->bindParam(':p_email',$email, PDO::PARAM_STR);         
          $stmt->bindParam(':p_phone',$phone, PDO::PARAM_STR);
          $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
+         return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
     
     }
+    */
+ 
+    function existsUser(string $email, string $phone) : bool {
+         // 1. Cambiamos CALL por SELECT porque en Postgres es una FUNCTION
+         $sql = "SELECT email FROM exists_user(:p_email, :p_phone)";
+    
+         $stmt = $this->connection->prepare($sql);
+  
+         $stmt->bindParam(':p_email', $email, \PDO::PARAM_STR);         
+         $stmt->bindParam(':p_phone', $phone, \PDO::PARAM_STR);
+    
+         $stmt->execute();
 
+         // 2. fetch() devuelve el array de la fila si existe, o FALSE si no hay nada
+         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    
+         // Si $result no es falso, significa que encontró al usuario
+         return $result !== false;
+    }
+
+    /*
     function login(string $user_name,string $phone) : array{
 
         $sql = "CALL login_user(:p_user_name,:p_phone)";
@@ -192,6 +240,26 @@ class UsersRepository implements IUserRepository {
 
         return $result ?: []; // devuelve array vacío si no hay resultado
     
+    }
+    */
+    function login(string $user_name, string $phone): array {
+
+        $sql = "SELECT *
+                FROM users
+                WHERE user_name = :p_user_name
+                AND phone = :p_phone
+                LIMIT 1";
+
+        $stmt = $this->connection->prepare($sql);
+
+        $stmt->bindParam(':p_user_name', $user_name, PDO::PARAM_STR);
+        $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ?: []; // devuelve array vacío si no hay resultado
     }
 
 
