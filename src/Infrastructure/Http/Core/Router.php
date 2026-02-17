@@ -22,27 +22,27 @@ class Router {
         $this->headers = getallheaders();
     }*/
     public function __construct() {
-            $this->method = $_SERVER['REQUEST_METHOD'];
-            $this->queryParams = $_GET;
+    $this->method = $_SERVER['REQUEST_METHOD'];
+    $this->queryParams = $_GET;
 
-            // 1. Obtenemos la URI completa (ej: /user o /LendApp/public/user)
-            $url = $_SERVER['REQUEST_URI'];
-            
-            // 2. Quitamos los parámetros de consulta (?id=1...)
-            $url = parse_url($url, PHP_URL_PATH);
+    $url = $_SERVER['REQUEST_URI'];
+    $url = parse_url($url, PHP_URL_PATH);
+    $scriptName = dirname($_SERVER['SCRIPT_NAME']);
+    $url = str_replace($scriptName, '', $url);
+    $this->url = trim($url, '/');
+    
+    // Captura estándar
+    $this->headers = getallheaders();
 
-            // 3. ESTA ES LA CLAVE: Eliminamos el path del script actual (index.php) 
-            // de la URL. Esto quita automáticamente "/LendApp/public" en local 
-            // y no quita nada en Render porque ahí no existe esa carpeta.
-            $scriptName = dirname($_SERVER['SCRIPT_NAME']);
-            $url = str_replace($scriptName, '', $url);
-
-            // 4. Limpieza final: quitar slashes extras y dejarlo limpio
-            $this->url = trim($url, '/');
-            
-            $this->headers = getallheaders();
+    // PARCHE DE SEGURIDAD: Si Authorization no está, buscarlo en $_SERVER
+    if (!isset($this->headers['Authorization'])) {
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $this->headers['Authorization'] = $_SERVER['HTTP_AUTHORIZATION'];
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $this->headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
     }
-
+}
 
     public function getHeaders(): array {   
         return $this->headers;
