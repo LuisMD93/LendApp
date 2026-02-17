@@ -4,7 +4,7 @@ namespace Infrastructure\Middlewares;
 use Application\UsersUseCases\LoginUser;
 use Shared\Helpers\Response;
 use Shared\Helpers\Constants\Constans;
-use Infrastructure\Firebase\JWT;
+use Infrastructure\Firebase\Jwt;
 
 
 class AuthMiddleware {
@@ -61,10 +61,10 @@ class AuthMiddleware {
 
         $dataUsers = $this->extractBasicAuthCredentials($authHeader);
         $dataCrendentils=$this->caseLoginUser->execute($dataUsers["userName"],$dataUsers["userPassword"]);
-        $header = JWT::createHeader();
+        $header = Jwt::createHeader();
         $secretKey = self::getSecretKey();
-        $payload = JWT::createPayload($dataCrendentils->getUsername(),$dataCrendentils->getRoleEnum()->value,$dataCrendentils->getId());
-        $jwt = JWT::createJWT($payload, $secretKey,$header);
+        $payload = Jwt::createPayload($dataCrendentils->getUsername(),$dataCrendentils->getRoleEnum()->value,$dataCrendentils->getId());
+        $jwt = Jwt::createJwt($payload, $secretKey,$header);
 
         return $jwt;
     }
@@ -92,12 +92,12 @@ class AuthMiddleware {
                 return false;
             }
 
-            $jwt = JWT::RemoveBearer($authHeader);
-            if (empty($jwt)) {
+            $Jwt = Jwt::RemoveBearer($authHeader);
+            if (empty($Jwt)) {
                 return false;
             }
 
-            $dataCrendentils = JWT::ExtractInfoFromToken($jwt, 1);
+            $dataCrendentils = Jwt::ExtractInfoFromToken($Jwt, 1);
             if (strtolower($dataCrendentils["rol"]) == 'admin') {
                 return true;
             }
@@ -105,7 +105,7 @@ class AuthMiddleware {
         return false;
     }
 
-    public function isValidJWT($request) : bool{
+    public function isValidJwt($request) : bool{
 
         if (!$this->isAuthorization($request)) {
             return Constans::UNAUTHORIZED_MESSAGE;
@@ -116,12 +116,12 @@ class AuthMiddleware {
             return false;
         }
        
-         $jwt = JWT::RemoveBearer($authHeader);
-           if (empty($jwt)) {
+         $Jwt = Jwt::RemoveBearer($authHeader);
+           if (empty($Jwt)) {
             return false;
            }
         
-         $parts = explode('.', $jwt);
+         $parts = explode('.', $Jwt);
             if (count($parts) !== 3) {
                 return false;
             }
@@ -131,7 +131,7 @@ class AuthMiddleware {
          $data = "$headerB64.$payloadB64";
          
          $secretKey = self::getSecretKey();
-         $expectedSignature = JWT::base64UrlEncode(hash_hmac('sha256', $data, $secretKey, true));
+         $expectedSignature = Jwt::base64UrlEncode(hash_hmac('sha256', $data, $secretKey, true));
         //  // Comparar firma esperada con la firma enviada
          return hash_equals($expectedSignature, $signatureB64);
          
@@ -151,12 +151,12 @@ class AuthMiddleware {
                 return false;
             }
 
-            $jwt = JWT::RemoveBearer($authHeader);
-            if (empty($jwt)) {
+            $Jwt = Jwt::RemoveBearer($authHeader);
+            if (empty($Jwt)) {
                 return false;
             }
 
-            $dataPayload = JWT::ExtractInfoFromToken($jwt, 1);
+            $dataPayload = Jwt::ExtractInfoFromToken($Jwt, 1);
 
             $iat = $dataPayload['iat']; // timestamp UNIX
             $currentTime = time();

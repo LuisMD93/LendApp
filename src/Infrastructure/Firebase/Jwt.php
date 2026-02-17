@@ -8,7 +8,7 @@ use Shared\Helpers\Response;
 use Shared\Helpers\Constants\Constans;
 use Application\UsersUseCases\LoginUser;
 
-class JWT {
+class Jwt {
    
      private $login_access;
 
