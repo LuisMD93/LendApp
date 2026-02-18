@@ -245,10 +245,11 @@ class UsersRepository implements IUserRepository {
     function login(string $user_name, string $phone): array {
 
         $sql = "SELECT *
-                FROM users
-                WHERE username = :p_user_name
-                AND phone = :p_phone
-                LIMIT 1";
+            FROM users
+            WHERE username = :p_user_name
+            AND REPLACE(phone, '+57 ', '') = :p_phone
+            LIMIT 1";
+
 
         $stmt = $this->connection->prepare($sql);
 
