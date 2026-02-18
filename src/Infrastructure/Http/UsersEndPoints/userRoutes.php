@@ -12,12 +12,9 @@ use Application\Exceptions\InvalidCredentialsException;
 use Shared\Helpers\Constants\Constans;
 
 
-// header("Access-Control-Allow-Origin: http://127.0.0.1:5501");
-// header("Access-Control-Allow-Headers: Authorization, Content-Type");
-// header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-// header("Access-Control-Allow-Credentials: true");
-$router = new Router();
 
+$router = new Router();
+echo '<pre>';print_r($router->url);echo '</pre>';die;
 if (!str_starts_with($router->url, 'user')) {
     return;
 }
