@@ -21,7 +21,7 @@ $router = new Router();
 if (!str_starts_with($router->url, 'user')) {
     return;
 }
-var_dump($_SERVER);
+var_dump($_SERVER['HTTP_AUTHORIZATION']);
 #$auth = new AuthMiddleware();
 $container = new Container();
 ContainerConfigurator::configure($container);
@@ -30,10 +30,7 @@ $controller = $container->get(UserController::class);
 $auth = $container->get(AuthMiddleware::class);
 $headers = $router->getHeaders();  
 $router = new Router();
-// DEBUG TEMPORAL
-if (isset($_GET['debug'])) {
-    die("URL detectada por el Router: '" . $router->url . "'");
-}
+
 switch ($router->method) {
     case 'GET':
         switch ($router->url) {
