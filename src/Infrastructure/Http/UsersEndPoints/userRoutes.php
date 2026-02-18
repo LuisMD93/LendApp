@@ -21,7 +21,7 @@ $router = new Router();
 if (!str_starts_with($router->url, 'user')) {
     return;
 }
-var_dump($_SERVER['HTTP_AUTHORIZATION']);
+var_dump($_SERVER['PHP_AUTH_USER']);
 #$auth = new AuthMiddleware();
 $container = new Container();
 ContainerConfigurator::configure($container);
