@@ -16,6 +16,7 @@ use Shared\Helpers\Constants\Constans;
 // header("Access-Control-Allow-Headers: Authorization, Content-Type");
 // header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 // header("Access-Control-Allow-Credentials: true");
+$router = new Router();
 
 if (!str_starts_with($router->url, 'user')) {
     return;
@@ -26,8 +27,7 @@ $container = new Container();
 ContainerConfigurator::configure($container);
 
 $controller = $container->get(UserController::class);
-$auth = $container->get(AuthMiddleware::class);  
-$router = new Router();
+$auth = $container->get(AuthMiddleware::class);
 
 $headers = $router->getHeaders();
 
