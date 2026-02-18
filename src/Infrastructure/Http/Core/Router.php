@@ -31,20 +31,12 @@ class Router {
     $url = str_replace($scriptName, '', $url);
     $this->url = trim($url, '/');
     
-    // Captura estándar
-    $this->headers = getallheaders();
-
-    // PARCHE DE SEGURIDAD: Si Authorization no está, buscarlo en $_SERVER
-    if (!isset($this->headers['Authorization'])) {
-        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-            $this->headers['Authorization'] = $_SERVER['HTTP_AUTHORIZATION'];
-        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-            $this->headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-        }
+     // Captura estándar
+    $this->headers = ["username"=>$_SERVER['PHP_AUTH_USER'] ,"password"=>$_SERVER['PHP_AUTH_PW'] ,"param"=>$this->queryParams];
     }
-}
 
-    public function getHeaders(): array {   
+
+    public function getHeaders() : array{
         return $this->headers;
     }
 }

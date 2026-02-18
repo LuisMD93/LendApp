@@ -21,7 +21,7 @@ $router = new Router();
 if (!str_starts_with($router->url, 'user')) {
     return;
 }
-var_dump($_SERVER['PHP_AUTH_USER']);
+
 #$auth = new AuthMiddleware();
 $container = new Container();
 ContainerConfigurator::configure($container);
@@ -30,6 +30,7 @@ $controller = $container->get(UserController::class);
 $auth = $container->get(AuthMiddleware::class);
 $headers = $router->getHeaders();  
 $router = new Router();
+echo '<pre>';var_dump($router->getHeaders());echo '</pre>';die;
 
 switch ($router->method) {
     case 'GET':
