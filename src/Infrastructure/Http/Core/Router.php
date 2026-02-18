@@ -25,13 +25,22 @@ class Router {
     $this->method = $_SERVER['REQUEST_METHOD'];
     $this->queryParams = $_GET;
 
+    // $url = $_SERVER['REQUEST_URI'];
+    // $url = parse_url($url, PHP_URL_PATH);
+    // $scriptName = dirname($_SERVER['SCRIPT_NAME']);
+    // $url = str_replace($scriptName, '', $url);
+    // $this->url = trim($url, '/');
     $url = $_SERVER['REQUEST_URI'];
     $url = parse_url($url, PHP_URL_PATH);
+
     $scriptName = dirname($_SERVER['SCRIPT_NAME']);
-    $url = str_replace($scriptName, '', $url);
-    $this->url = trim($url, '/');
+
+    // CORRECCIÓN: Solo hacemos el reemplazo si el scriptName NO es solo una barra
+    // y si realmente está presente al inicio de la URL.
+    if ($scriptName !== '/' && $scriptName !== '\\' && !empty($scriptName)) {
+        $url = str_replace($scriptName, '', $url);
+    }
     
-     // Captura estándar
     $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER'] ,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ,"param"=>$this->queryParams];
     }
 
