@@ -14,7 +14,6 @@ use Shared\Helpers\Constants\Constans;
 
 
 $router = new Router();
-echo '<pre>';print_r($router->url);echo '</pre>';die;
 if (!str_starts_with($router->url, 'user')) {
     return;
 }
