@@ -30,7 +30,12 @@ $controller = $container->get(UserController::class);
 $auth = $container->get(AuthMiddleware::class);
 $headers = $router->getHeaders();  
 $router = new Router();
-echo '<pre>';var_dump($router->getHeaders());echo '</pre>';die;
+
+$data = $router->getHeaders();
+echo '<pre>';var_dump($data["param"]["name"]." - ".
+$data["param"]["lastname"]);echo '</pre>';
+
+echo '<pre>';var_dump($data['username']);echo '</pre>';die;
 
 switch ($router->method) {
     case 'GET':
