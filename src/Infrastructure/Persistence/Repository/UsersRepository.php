@@ -246,7 +246,7 @@ class UsersRepository implements IUserRepository {
 
         $sql = "SELECT *
                 FROM users
-                WHERE user_name = :p_user_name
+                WHERE username = :p_user_name
                 AND phone = :p_phone
                 LIMIT 1";
 

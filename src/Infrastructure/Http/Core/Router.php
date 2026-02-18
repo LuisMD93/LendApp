@@ -24,7 +24,7 @@ class Router {
             $url = str_replace($scriptName, '', $url);
         }
         $this->url = trim($url, '/');
-        $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER'] ,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ,"param"=>$this->queryParams];
+        $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER'] ,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ?? '',"param"=>$this->queryParams];
     }
 
 
