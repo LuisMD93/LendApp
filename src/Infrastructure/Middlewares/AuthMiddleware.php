@@ -21,46 +21,12 @@ class AuthMiddleware {
         }
     }
 
-    private  function isAuthorization($request) : bool {
-        return isset($request['Authorization']);
-    }
+    
 
-    private function isBasic($authHeader) : bool {
-        return strpos($authHeader, 'Basic ') === 0;
-    }
-
-    private function extractBasicAuthCredentials($authHeader) : array {
-
-        $encodedCredentials = substr($authHeader, 6);
-        $decoded = base64_decode($encodedCredentials);
-
-        if (!$decoded || !str_contains($decoded, ':')) {
-            return [];
-        }
-
-        list($user, $password) = explode(':', $decoded, 2); 
-
-        return [
-                 "userName"=>$user,
-                 "userPassword"=>$password
-               ];
-
-    }
     
     public function authMiddleware($request): string {
      
-        if (!$this->isAuthorization($request)) {
-            return Constans::UNAUTHORIZED_MESSAGE;
-        }
-        
-            $authHeader = $request['Authorization'];
-    
-        if(!$this->isBasic($authHeader)) {
-            return Constans::UNAUTHORIZED_MESSAGE;
-        }
-
-        $dataUsers = $this->extractBasicAuthCredentials($authHeader);
-        $dataCrendentils=$this->caseLoginUser->execute($dataUsers["userName"],$dataUsers["userPassword"]);
+        $dataCrendentils=$this->caseLoginUser->execute($request["userName"],$request["userPassword"]);
         $header = Jwt::createHeader();
         $secretKey = self::getSecretKey();
         $payload = Jwt::createPayload($dataCrendentils->getUsername(),$dataCrendentils->getRoleEnum()->value,$dataCrendentils->getId());
@@ -83,9 +49,7 @@ class AuthMiddleware {
     public  function checkAdmin($request) : bool {
 
    
-            if (!$this->isAuthorization($request)) {
-                return false;
-            }
+    
 
             $authHeader = $request['Authorization'];
             if (strpos($authHeader, 'Bearer') !== 0) {
@@ -107,9 +71,6 @@ class AuthMiddleware {
 
     public function isValidJwt($request) : bool{
 
-        if (!$this->isAuthorization($request)) {
-            return Constans::UNAUTHORIZED_MESSAGE;
-        }
 
         $authHeader = $request['Authorization'];
         if (strpos($authHeader, 'Bearer') !== 0) {
@@ -141,10 +102,6 @@ class AuthMiddleware {
     public function ValidateTokenExpiration($request) : bool {
     
       date_default_timezone_set('America/Bogota');
-
-            if (!$this->isAuthorization($request)) {
-                return false;
-            }
 
             $authHeader = $request['Authorization'];
             if (strpos($authHeader, 'Bearer') !== 0) {

@@ -32,7 +32,7 @@ class Router {
     $this->url = trim($url, '/');
     
      // Captura estándar
-    $this->headers = ["username"=>$_SERVER['PHP_AUTH_USER'] ,"password"=>$_SERVER['PHP_AUTH_PW'] ,"param"=>$this->queryParams];
+    $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER'] ,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ,"param"=>$this->queryParams];
     }
 
 

@@ -31,11 +31,7 @@ $auth = $container->get(AuthMiddleware::class);
 $headers = $router->getHeaders();  
 $router = new Router();
 
-$data = $router->getHeaders();
-echo '<pre>';var_dump($data["param"]["name"]." - ".
-$data["param"]["lastname"]);echo '</pre>';
-
-echo '<pre>';var_dump($data['username']);echo '</pre>';die;
+$headers = $router->getHeaders();
 
 switch ($router->method) {
     case 'GET':
@@ -131,7 +127,7 @@ switch ($router->method) {
                                                 true,
                                                 Constans::RESPONSE_SUCCESS,
                                                 200,
-                                                $auth->authMiddleware($router->getHeaders())
+                                                $auth->authMiddleware($headers)
                                       );
                 }catch (InvalidCredentialsException $th) {
                    return  Response::error(false,$th->getMessage(),401);
