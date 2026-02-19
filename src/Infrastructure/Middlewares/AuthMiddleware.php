@@ -51,7 +51,7 @@ class AuthMiddleware {
    
     
 
-            $authHeader = $request['Authorization'];
+            $authHeader = $request['token'];
             if (strpos($authHeader, 'Bearer') !== 0) {
                 return false;
             }
