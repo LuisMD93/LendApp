@@ -50,8 +50,8 @@ class UserMapper {
                 $user['api_token'],
                 $user['phone'],
                 $rolEnum,
-                new DateTime($user['creationDate']), 
-                new DateTime($user['modificationDate'])
+                new DateTime($user['creationdate']), 
+                new DateTime($user['modificationdate'])
             );
         }
         return $userArray;
@@ -67,8 +67,8 @@ class UserMapper {
                 $user['api_token'],
                 $user['phone'],
                 $rolEnum,
-                new DateTime($user['creationDate']), 
-                new DateTime($user['modificationDate'])
+                new DateTime($user['creationdate']), 
+                new DateTime($user['modificationdate'])
             );
     }
 
