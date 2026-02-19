@@ -47,14 +47,13 @@ switch ($router->method) {
                        Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
                     }
 
-                     Response::success(true,Constans::RESPONSE_SUCCESS,200,$headers["token"]);
 
-                    // $isExperation = $auth->ValidateTokenExpiration($headers);
-                    // if($isExperation){
-                    //     $controller->show();
-                    // }else{
-                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    // }
+                    $isExperation = $auth->ValidateTokenExpiration($headers);
+                    if($isExperation){
+                        $controller->show();
+                    }else{
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
                 break;
             case 'usersByPhone':
                     $isValid = $auth->isValidJWT($headers);

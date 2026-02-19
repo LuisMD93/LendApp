@@ -103,7 +103,7 @@ class AuthMiddleware {
     
       date_default_timezone_set('America/Bogota');
 
-            $authHeader = $request['Authorization'];
+            $authHeader = $request['token'];
             if (strpos($authHeader, 'Bearer') !== 0) {
                 return false;
             }
