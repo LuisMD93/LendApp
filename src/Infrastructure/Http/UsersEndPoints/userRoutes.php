@@ -41,11 +41,13 @@ switch ($router->method) {
                     if(!$isValid){  
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }
-                  Response::success(true,Constans::RESPONSE_SUCCESS,200,$headers["token"]);
-                    // $isAdmin = $auth->checkAdmin($headers);
-                    // if (!$isAdmin) {
-                    //    Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
-                    // }
+                 
+                    $isAdmin = $auth->checkAdmin($headers);
+                    if (!$isAdmin) {
+                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    }
+
+                     Response::success(true,Constans::RESPONSE_SUCCESS,200,$headers["token"]);
 
                     // $isExperation = $auth->ValidateTokenExpiration($headers);
                     // if($isExperation){
