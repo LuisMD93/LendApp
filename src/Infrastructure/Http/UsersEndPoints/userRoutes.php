@@ -26,7 +26,7 @@ $controller = $container->get(UserController::class);
 $auth = $container->get(AuthMiddleware::class);
 
 $headers = $router->getHeaders();
-
+echo '<pre>';print_r($headers['token']);echo '</pre>';die;
 switch ($router->method) {
     case 'GET':
         switch ($router->url) {
