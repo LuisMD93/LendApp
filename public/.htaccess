@@ -21,6 +21,13 @@
 
 RewriteEngine On
 RewriteBase /
+
+# --- ESTA ES LA PARTE QUE TE FALTA ---
+# Captura el Header Authorization y lo pasa a la variable de entorno de PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# -------------------------------------
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L,QSA]

@@ -29,7 +29,7 @@ class Router {
         ?? $this->headers['authorization']        // 4. Caso en minúsculas
         ?? null;
         $this->url = trim($url, '/');
-        $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER'] ,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ?? '',"param"=>$this->queryParams,"token"=>$tokenRaw];
+        $this->headers = ["userName"=>$_SERVER['PHP_AUTH_USER']  ?? null,"userPassword"=>$_SERVER['PHP_AUTH_PW'] ?? null,"param"=>$this->queryParams,"token"=>$tokenRaw];
     }
 
 
