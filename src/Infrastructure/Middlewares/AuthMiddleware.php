@@ -72,7 +72,7 @@ class AuthMiddleware {
     public function isValidJwt($request) : bool{
 
 
-        $authHeader = $request['Authorization'];
+        $authHeader = $request['token'];
         if (strpos($authHeader, 'Bearer') !== 0) {
             return false;
         }

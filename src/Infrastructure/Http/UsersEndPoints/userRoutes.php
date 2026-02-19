@@ -18,7 +18,6 @@ if (!str_starts_with($router->url, 'user')) {
     return;
 }
 
-#$auth = new AuthMiddleware();
 $container = new Container();
 ContainerConfigurator::configure($container);
 
@@ -26,7 +25,7 @@ $controller = $container->get(UserController::class);
 $auth = $container->get(AuthMiddleware::class);
 
 $headers = $router->getHeaders();
-echo '<pre>';print_r($headers['token']);echo '</pre>';die;
+
 switch ($router->method) {
     case 'GET':
         switch ($router->url) {
@@ -37,26 +36,23 @@ switch ($router->method) {
                 echo "Módulo usuarios";
                 break;
             case 'users':
-                #$isExperation = $auth->ValidateTokenExpiration($router->getHeaders());die;
-                #$auth->isValidJWT($router->getHeaders()) ? $controller->show() : Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-              
 
                     $isValid = $auth->isValidJWT($headers);
                     if(!$isValid){  
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }
+                  Response::success(true,Constans::RESPONSE_SUCCESS,$headers["token"]);
+                    // $isAdmin = $auth->checkAdmin($headers);
+                    // if (!$isAdmin) {
+                    //    Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    // }
 
-                    $isAdmin = $auth->checkAdmin($headers);
-                    if (!$isAdmin) {
-                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
-                    }
-
-                    $isExperation = $auth->ValidateTokenExpiration($headers);
-                    if($isExperation){
-                        $controller->show();
-                    }else{
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
+                    // $isExperation = $auth->ValidateTokenExpiration($headers);
+                    // if($isExperation){
+                    //     $controller->show();
+                    // }else{
+                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    // }
                 break;
             case 'usersByPhone':
                     $isValid = $auth->isValidJWT($headers);
