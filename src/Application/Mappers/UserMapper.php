@@ -24,7 +24,7 @@ class UserMapper {
     }
 
     public static function toDto(User $entity): UserDto {
-        echo '<pre>';print_r($entity);echo '</pre>';die;
+      
         return new UserDto(
             $entity->getId(),
             $entity->getUsername(),
