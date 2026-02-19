@@ -2,7 +2,7 @@
 
 namespace Application\Mappers;
 
-use Application\DTOs\UserDto;
+use Application\Dtos\UserDto;
 use Domain\Models\User;
 use DateTime;
 use Shared\Helpers\Enums\RoleEnum;

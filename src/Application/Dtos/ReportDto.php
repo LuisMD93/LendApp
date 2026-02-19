@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\DTOs;
+namespace Application\Dtos;
 use DateTime;
 use JsonSerializable;
 

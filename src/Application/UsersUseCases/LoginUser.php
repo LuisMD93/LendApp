@@ -2,7 +2,7 @@
 
 namespace Application\UsersUseCases;
 
-use Application\DTOs\UserDto;
+use Application\Dtos\UserDto;
 use Domain\Repository\IUserRepository;
 use Application\Mappers\UserMapper;
 use Application\Exceptions\InvalidCredentialsException;

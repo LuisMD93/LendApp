@@ -2,7 +2,7 @@
 
 namespace Application\Mappers; 
 
-use Application\DTOs\ReportDto;
+use Application\Dtos\ReportDto;
 use Domain\Models\Report;
 use DateTime;
 
@@ -49,8 +49,8 @@ class ReportMapper {
                 $report['description'],
                 $report['lendStatus'],
                 $report['id_user'],
-                new DateTime($report['creationDate']), 
-                new DateTime($report['modificationDate']),
+                new DateTime($report['creationdate']), 
+                new DateTime($report['modificationdate']),
 
 
             );
