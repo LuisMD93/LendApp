@@ -23,6 +23,7 @@ class LoginUser {
            throw new EmptyCredentialsException();
        }
        $user = $this->userRepository->login($user,$phone);
+       echo '<pre>';print_r($user);echo '</pre>';die;
        if(!$user){
           throw new InvalidCredentialsException();
        }
