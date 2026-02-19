@@ -28,7 +28,6 @@ class LoginUser {
        }
       
        $userEntity = UserMapper::fromArrayEntitySingle($user);
-       echo '<pre>';print_r($userEntity);echo '</pre>';
        return UserMapper::toDto($userEntity);    
        
     }
