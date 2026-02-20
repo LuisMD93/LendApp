@@ -4,8 +4,10 @@ namespace Shared\Mapping;
 
 use Application\Dtos\LoginRequestDto;
 use Application\Dtos\UserDto;
+use Shared\Helpers\Enums;
 
 use DateTime;
+use Shared\Helpers\Enums\RoleEnum;
 
 class UserMapper {
 
@@ -28,7 +30,7 @@ class UserMapper {
                 $data["Password"],    
                 $data["API_Token"], 
                 $data["Phone"],
-                $data["role_user"],
+                RoleEnum::from($data["role_user"]),
                 new DateTime(),
                 new DateTime()       
         );
