@@ -260,7 +260,8 @@ class UsersRepository implements IUserRepository {
         $stmt->execute();
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        echo '<pre>';print_r("UsersRepository ".$result);echo '</pre>';die;
+     
         return $result ?: []; // devuelve array vacío si no hay resultado
     }
 
