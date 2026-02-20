@@ -110,7 +110,23 @@ switch ($router->method) {
     case 'POST':
         switch ($router->url) {
             case 'user/Add':
-                 $controller->save(UserMapper::fromArray(Response::arrayParse('php://input')));
+                    $isValid = $auth->isValidJWT($headers);
+                    if(!$isValid){  
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
+
+                    $isAdmin = $auth->checkAdmin($headers);
+                    if (!$isAdmin) {
+                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    }
+
+                    $isExperation = $auth->ValidateTokenExpiration($headers);
+                    if($isExperation){
+                      $controller->save(UserMapper::fromArray(Response::arrayParse('php://input')));
+                    }else{
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
+                       
                 break;
             case 'user/login':
                 
@@ -124,8 +140,7 @@ switch ($router->method) {
                 }catch (InvalidCredentialsException $th) {
                    return  Response::error(false,$th->getMessage(),401);
                 }
-                 #$controller->access(null);
-                //$controller->access(UserMapper::fromArraylogin(Response::arrayParse('php://input')));
+
                 break;
             default:
                 echo "Ruta GET no encontrada: '$router->url'";

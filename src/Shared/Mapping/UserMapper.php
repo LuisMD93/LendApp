@@ -2,8 +2,8 @@
 
 namespace Shared\Mapping;
 
-use Application\DTOs\LoginRequestDto;
-use Application\DTOs\UserDto;
+use Application\Dtos\LoginRequestDto;
+use Application\Dtos\UserDto;
 
 use DateTime;
 
@@ -28,7 +28,7 @@ class UserMapper {
                 $data["Password"],    
                 $data["API_Token"], 
                 $data["Phone"],
-                $data[""],
+                $data["role_user"],
                 new DateTime(),
                 new DateTime()       
         );
