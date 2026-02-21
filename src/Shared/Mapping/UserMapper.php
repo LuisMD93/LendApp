@@ -17,7 +17,8 @@ class UserMapper {
                 'email' => $user->getEmail(),
                 'password' => $user->getPassword(),
                 'api_token' => $user->getWebToken(),
-                'phon' => $user->getPhone()
+                'phone' => $user->getPhone(),
+                'rol_user' => $user->getRoleEnum()->value
         ];
     }
 
@@ -25,11 +26,11 @@ class UserMapper {
     public static function fromArray(array $data) {
         return new UserDto(
                 $data["id"] ?? 0,
-                $data["Username"],
-                $data["Email"],    
-                $data["Password"],    
-                $data["API_Token"], 
-                $data["Phone"],
+                $data["username"],
+                $data["email"],    
+                $data["password"],    
+                $data["api_token"], 
+                $data["phone"],
                 RoleEnum::from($data["role_user"]),
                 new DateTime(),
                 new DateTime()       
