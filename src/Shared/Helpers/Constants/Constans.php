@@ -27,7 +27,7 @@ class Constans {
     const API_VERSION = '1.0';
     const DEFAULT_TIMEZONE = 'UTC';
 
-    const FIELDS = ["username","email","password","api_token","phon"];
+    const FIELDS = ["username","email","password","api_token","phone","rol_user"];
     const REPORT_FIELDS =["location","name","amount" ,"description","lendStatus","id_user"];   
 
     const REQUEST_MAPPING = 'ApiHexagonalPhp/public/learn';
