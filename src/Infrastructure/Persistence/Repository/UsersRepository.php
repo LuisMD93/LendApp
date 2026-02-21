@@ -214,13 +214,14 @@ class UsersRepository implements IUserRepository {
     
          $stmt = $this->connection->prepare($sql);
   
-         $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);         
+         $stmt->bindParam(':p_email', '+57 '.$email, PDO::PARAM_STR);         
          $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
     
          $stmt->execute();
 
          // 2. fetch() devuelve el array de la fila si existe, o FALSE si no hay nada
          $result = $stmt->fetch(PDO::FETCH_ASSOC);
+         echo '<pre>';print_r($result);echo '</pre>';die;
     
          // Si $result no es falso, significa que encontró al usuario
          return $result !== false;
