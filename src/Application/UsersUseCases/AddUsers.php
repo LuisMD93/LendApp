@@ -16,8 +16,14 @@ class AddUsers {
     }
 
     public function execute(UserDto $userDto): bool {
+
+            $response = $this->userRepository->existsUser($userDto->getEmail(),$userDto->getPhone());
+            if ($response==false) {
+               echo '<pre>';print_r(["response"=>"No existe en bd"]);echo '</pre>';die;
+            }else{
+                echo '<pre>';print_r(["response"=>"No existe en bd"]);echo '</pre>';die;
+            }
             
-            echo '<pre>';print_r($this->userRepository->existsUser($userDto->getEmail(),$userDto->getPhone()));echo '</pre>';die;
             if($this->userRepository->existsUser($userDto->getEmail(),$userDto->getPhone())){
                return false;
             }
