@@ -208,23 +208,42 @@ class UsersRepository implements IUserRepository {
     }
     */
  
-    function existsUser(string $email, string $phone) : bool {
-         // 1. Cambiamos CALL por SELECT porque en Postgres es una FUNCTION
-         $sql = "SELECT email FROM exists_user(:p_email, :p_phone)";
+    // function existsUser(string $email, string $phone) : bool {
+    //      // 1. Cambiamos CALL por SELECT porque en Postgres es una FUNCTION
+    //      $sql = "SELECT email FROM exists_user(:p_email, :p_phone)";
     
-         $stmt = $this->connection->prepare($sql);
+    //      $stmt = $this->connection->prepare($sql);
   
-         $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);         
-         $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
+    //      $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);         
+    //      $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
     
-         $stmt->execute();
+    //      $stmt->execute();
 
-         // 2. fetch() devuelve el array de la fila si existe, o FALSE si no hay nada
-         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //      // 2. fetch() devuelve el array de la fila si existe, o FALSE si no hay nada
+    //      $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
-         // Si $result no es falso, significa que encontró al usuario
-         return $result !== false;
-    }
+    //      // Si $result no es falso, significa que encontró al usuario
+    //      return $result !== false;
+    // }
+    function existsUser(string $email, string $phone) : bool {
+    $sql = "
+        SELECT EXISTS(
+            SELECT 1 
+            FROM users 
+            WHERE email = :p_email 
+              AND phone = :p_phone
+        ) AS user_exists
+    ";
+
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $result['user_exists'] === true || $result['user_exists'] === 't';
+}
 
     /*
     function login(string $user_name,string $phone) : array{
