@@ -214,7 +214,7 @@ class UsersRepository implements IUserRepository {
     
          $stmt = $this->connection->prepare($sql);
   
-         $stmt->bindParam(':p_email', '+57 '.$email, PDO::PARAM_STR);         
+         $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);         
          $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
     
          $stmt->execute();
