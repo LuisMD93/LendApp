@@ -221,7 +221,6 @@ class UsersRepository implements IUserRepository {
 
          // 2. fetch() devuelve el array de la fila si existe, o FALSE si no hay nada
          $result = $stmt->fetch(PDO::FETCH_ASSOC);
-         echo '<pre>';print_r($result);echo '</pre>';die;
     
          // Si $result no es falso, significa que encontró al usuario
          return $result !== false;

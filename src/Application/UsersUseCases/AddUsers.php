@@ -17,6 +17,7 @@ class AddUsers {
 
     public function execute(UserDto $userDto): bool {
             
+            echo '<pre>';print_r($this->userRepository->existsUser($userDto->getEmail(),$userDto->getPhone()));echo '</pre>';die;
             if($this->userRepository->existsUser($userDto->getEmail(),$userDto->getPhone())){
                return false;
             }
