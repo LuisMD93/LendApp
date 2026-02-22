@@ -80,7 +80,7 @@ class UsersRepository implements IUserRepository {
         $stmt->bindValue(':p_password_', $user->getPassword(), PDO::PARAM_STR);
         $stmt->bindValue(':p_api_token_', $user->getApiToken(), PDO::PARAM_STR);
         $stmt->bindValue(':p_phone_', $user->getPhone(), PDO::PARAM_STR);
-        $stmt->bindValue(':p_rol_user_', $user->getRoleEnum(), PDO::PARAM_STR);
+        $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
 
         $result = $stmt->execute();
 
