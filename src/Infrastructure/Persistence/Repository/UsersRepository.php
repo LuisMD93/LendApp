@@ -91,8 +91,8 @@ class UsersRepository implements IUserRepository {
 
     } catch (Exception $e) {
         if ($this->connection->inTransaction()) {
-            $this->connection->rollBack();
-            echo '<pre>';print_r(["inTransaction"=>$this->connection->inTransaction(),"rollBack"=>
+            #$this->connection->rollBack();
+            echo '<pre>';print_r(["rollBack"=>
             $this->connection->rollBack()]);echo '</pre>';
         }
         // Registramos el error exacto de Postgres (ej. violación de unicidad de email)
