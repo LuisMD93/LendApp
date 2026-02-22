@@ -20,7 +20,7 @@ class UsersRepository implements IUserRepository {
     }
     
 
-
+    /*
     function createUser(User $user) : bool{
     
         try{
@@ -29,7 +29,7 @@ class UsersRepository implements IUserRepository {
            
             $this->connection->beginTransaction(); 
             
-            $sql = "call add_user(:p_user_name_,:p_email_,:p_password_,:p_api_token_,:p_phone_)";
+            $sql = "call add_user(:p_user_name_,:p_email_,:p_password_,:p_api_token_,:p_phone_,:p_rol_user)";
             $stmt = $this->connection->prepare($sql);
         
                 $name = $user->getUsername();
@@ -37,12 +37,14 @@ class UsersRepository implements IUserRepository {
                 $pass = $user->getPassword();
                 $apiToken = $user->getApiToken();
                 $phon_cell = $user->getPhone();
+                $rol_user = $user->getRoleEnum();
                       
                 $stmt->bindParam(':p_user_name_', $name, PDO::PARAM_STR);
                 $stmt->bindParam(':p_email_', $email, PDO::PARAM_STR);
                 $stmt->bindParam(':p_password_', $pass, PDO::PARAM_STR);
                 $stmt->bindParam(':p_api_token_', $apiToken, PDO::PARAM_STR);
                 $stmt->bindParam(':p_phone_', $phon_cell, PDO::PARAM_STR);
+                $stmt->bindParam(':p_rol_user', $rol_user, PDO::PARAM_STR);
                 
         
             $stmt->execute();
@@ -64,7 +66,38 @@ class UsersRepository implements IUserRepository {
         }
 
     }     
+    */
+    function createUser(User $user): bool {
+    try {
+        $this->connection->beginTransaction();
 
+        // Para PROCEDURES en Postgres se usa CALL
+        $sql = "CALL add_user(:p_user_name_, :p_email_, :p_password_, :p_api_token_, :p_phone_,:p_rol_user_)";
+        $stmt = $this->connection->prepare($sql);
+
+        $stmt->bindValue(':p_user_name_', $user->getUsername(), PDO::PARAM_STR);
+        $stmt->bindValue(':p_email_', $user->getEmail(), PDO::PARAM_STR);
+        $stmt->bindValue(':p_password_', $user->getPassword(), PDO::PARAM_STR);
+        $stmt->bindValue(':p_api_token_', $user->getApiToken(), PDO::PARAM_STR);
+        $stmt->bindValue(':p_phone_', $user->getPhone(), PDO::PARAM_STR);
+        $stmt->bindValue('::p_rol_user_', $user->getPhone(), PDO::PARAM_STR);
+
+        $result = $stmt->execute();
+
+        // En un PROCEDURE, si no hubo excepción, asumimos éxito.
+        // commit() confirmará la inserción en Postgres.
+        $this->connection->commit();
+        return true;
+
+    } catch (Exception $e) {
+        if ($this->connection->in_transaction()) {
+            $this->connection->rollBack();
+        }
+        // Registramos el error exacto de Postgres (ej. violación de unicidad de email)
+        error_log("Error en add_user (Postgres): " . $e->getMessage());
+        return false;
+    }
+}
     function  findUserById(int $userId) : bool{
 
         $sql = "CALL search_User_by_Id(:userId)";
