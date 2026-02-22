@@ -90,7 +90,7 @@ class UsersRepository implements IUserRepository {
         return true;
 
     } catch (Exception $e) {
-        if ($this->connection->in_transaction()) {
+        if ($this->connection->inTransaction()) {
             $this->connection->rollBack();
         }
         // Registramos el error exacto de Postgres (ej. violación de unicidad de email)
