@@ -83,7 +83,7 @@ class UsersRepository implements IUserRepository {
         $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
 
         $result = $stmt->execute();
-
+        echo '<pre>';print_r($result);echo '</pre>';
         // En un PROCEDURE, si no hubo excepción, asumimos éxito.
         // commit() confirmará la inserción en Postgres.
         $this->connection->commit();
@@ -92,6 +92,8 @@ class UsersRepository implements IUserRepository {
     } catch (Exception $e) {
         if ($this->connection->inTransaction()) {
             $this->connection->rollBack();
+            echo '<pre>';print_r(["inTransaction"=>$this->connection->inTransaction(),"rollBack"=>
+            $this->connection->rollBack()]);echo '</pre>';
         }
         // Registramos el error exacto de Postgres (ej. violación de unicidad de email)
         error_log("Error en add_user (Postgres): " . $e->getMessage());
