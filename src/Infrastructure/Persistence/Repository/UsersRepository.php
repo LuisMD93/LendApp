@@ -7,6 +7,7 @@ use Infrastructure\Persistence\Doctrine\Connection;
 use Domain\Models\User;
 use \PDO;
 use \Exception;
+use Shared\Helpers\Response;
 
 class UsersRepository implements IUserRepository {
 
@@ -91,11 +92,9 @@ class UsersRepository implements IUserRepository {
 
     } catch (Exception $e) {
         if ($this->connection->inTransaction()) {
-            #$this->connection->rollBack();
-            echo '<pre>';print_r(["rollBack"=>
-            $this->connection->rollBack()]);echo '</pre>';
+            $this->connection->rollBack();
         }
-        echo '<pre>';print_r(["getMessage"=>$e->getMessage(),"Code SQLSTATE"=>$e->getCode()]);echo '</pre>';
+         Response::error(false,"Error en add_user (Postgres): ".$e->getMessage(),$e->getCode());
         // Registramos el error exacto de Postgres (ej. violación de unicidad de email)
         error_log("Error en add_user (Postgres): " . $e->getMessage());
         return false;
