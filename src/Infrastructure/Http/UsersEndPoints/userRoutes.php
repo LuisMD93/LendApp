@@ -70,9 +70,9 @@ switch ($router->method) {
                     $isExperation = $auth->ValidateTokenExpiration($headers);
                     if($isExperation){
                        $phone = $headers['param'];
-                       echo '<pre>';var_dump($phone);echo '</pre>';die;
-                       $x = (string) $phone;
-                       echo is_numeric($phone);
+                       echo '<pre>';var_dump($phone);echo '</pre>';
+                       #$x = (string) $phone;
+                       echo ($phone);
                        echo is_string($x);
                        #echo '<pre>';print_r($phone);echo '</pre>';die;
                        $controller->getByPhone($phone);
