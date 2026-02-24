@@ -55,7 +55,7 @@ class UsersRepository implements IUserRepository {
 }
     function  findUserById(int $userId) : bool{
 
-        $sql = "CALL search_User_by_Id(:userId)";
+        $sql = "SELECT * FROM search_User_by_Id(:userId)";
         $stmt = $this->connection->prepare($sql);
    
          $stmt->bindParam(':userId',$userId, PDO::PARAM_STR);
