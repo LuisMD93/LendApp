@@ -71,7 +71,7 @@ switch ($router->method) {
                     if($isExperation){
                        $phone = $headers['param'];
                        $controller->getByPhone($phone);
-                       $controller->update(UserMapper::fromArray(Response::arrayParse('php://input')));
+                       #$controller->update(UserMapper::fromArray(Response::arrayParse('php://input')));
                     }else{
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }

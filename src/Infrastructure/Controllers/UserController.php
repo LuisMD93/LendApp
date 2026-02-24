@@ -64,7 +64,7 @@ class UserController{
     // }
 
     function getByPhone(string $phone) {  
-
+        echo '<pre>';print_r($phone);echo '</pre>';die;
         $result = $this->searchByPhoneUser->execute($phone);
         if($result){
           return Response::success($result,"number registered in the system");
