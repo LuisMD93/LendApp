@@ -119,7 +119,9 @@ class AuthMiddleware {
             $currentTime = time();
 
             // ⏱️ 5 minutos = 300 segundos
-            $expirationTime = $iat + 300;
+            #$expirationTime = $iat + 300;
+            // ⏱️ 1 dia = 86400 segundos
+            $expirationTime = $iat + 86400;
 
             // Debug opcional
             // echo "Hora del token: " . date('Y-m-d H:i:s', $iat) . " ";
