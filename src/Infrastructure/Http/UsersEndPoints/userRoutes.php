@@ -70,8 +70,7 @@ switch ($router->method) {
                     $isExperation = $auth->ValidateTokenExpiration($headers);
                     if($isExperation){
                        $phone = implode(",",$headers['param']);
-                       echo $phone;
-                       #$controller->getByPhone($phone);
+                       $controller->getByPhone($phone);
                     }else{
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }
