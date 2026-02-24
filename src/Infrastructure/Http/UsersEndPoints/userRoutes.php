@@ -71,7 +71,7 @@ switch ($router->method) {
                     if($isExperation){
                        $phone = $headers['param'];
                        echo '<pre>';var_dump($phone);echo '</pre>';
-                       $echo = $phone."";
+                       $echo = implode(",",$phone);
                        echo $echo;
                        #echo '<pre>';print_r($phone);echo '</pre>';die;
                        #$controller->getByPhone($phone);
