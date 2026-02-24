@@ -84,7 +84,7 @@ class UsersRepository implements IUserRepository {
             
             $this->connection->beginTransaction(); // Iniciar una transacción
             
-            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_)"; 
+            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_, :p_api_token_)"; 
             $stmt = $this->connection->prepare($sql);    
            
             $id = $user->getId();
@@ -101,6 +101,7 @@ class UsersRepository implements IUserRepository {
             $stmt->bindParam(':p_email_', $new_email);
             $stmt->bindParam(':p_token_', $new_api_token);
             $stmt->bindParam(':p_phone_', $new_phone);
+            $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
             
             $stmt->execute();
             
