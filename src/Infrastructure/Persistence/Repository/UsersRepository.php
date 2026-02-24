@@ -21,53 +21,6 @@ class UsersRepository implements IUserRepository {
     }
     
 
-    /*
-    function createUser(User $user) : bool{
-    
-        try{
-
-        $response = false;
-           
-            $this->connection->beginTransaction(); 
-            
-            $sql = "call add_user(:p_user_name_,:p_email_,:p_password_,:p_api_token_,:p_phone_,:p_rol_user)";
-            $stmt = $this->connection->prepare($sql);
-        
-                $name = $user->getUsername();
-                $email = $user->getEmail();
-                $pass = $user->getPassword();
-                $apiToken = $user->getApiToken();
-                $phon_cell = $user->getPhone();
-                $rol_user = $user->getRoleEnum();
-                      
-                $stmt->bindParam(':p_user_name_', $name, PDO::PARAM_STR);
-                $stmt->bindParam(':p_email_', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':p_password_', $pass, PDO::PARAM_STR);
-                $stmt->bindParam(':p_api_token_', $apiToken, PDO::PARAM_STR);
-                $stmt->bindParam(':p_phone_', $phon_cell, PDO::PARAM_STR);
-                $stmt->bindParam(':p_rol_user', $rol_user, PDO::PARAM_STR);
-                
-        
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-                $this->connection->commit();
-                $response = true;
-            } else {
-                $this->connection->rollBack();
-            }
-         
-            return $response;
-            
-        } catch (Exception $e) {
-            $this->connection->rollBack();
-            echo "Error: " . $e->getMessage();
-        } finally {
-            return $response;
-            $this->connection = null;
-        }
-
-    }     
-    */
     function createUser(User $user): bool {
     try {
         $this->connection->beginTransaction();
@@ -111,15 +64,6 @@ class UsersRepository implements IUserRepository {
         return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;     
 
     }
-    /*
-    function getAllUsers() : array {
-
-        $sql = "call get_All_Users()";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    */
 
     function getAllUsers() : array {
         // En Postgres, las funciones que devuelven tablas se consultan con SELECT
@@ -178,18 +122,6 @@ class UsersRepository implements IUserRepository {
         }
 
     } 
-    /*
-    function searchUserByPhone(string $phone) : bool{
-        
-        $sql = "CALL search_by_phone_User(:p_phone)";
-        $stmt = $this->connection->prepare($sql);
-   
-         $stmt->bindParam(':p_phone',$phone, PDO::PARAM_STR);
-         $stmt->execute();
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC) > 0 ? true: false;
-    }
-    */
 
     function searchUserByPhone(string $phone) : bool {
         // 1. En Postgres usamos SELECT para funciones que devuelven resultados

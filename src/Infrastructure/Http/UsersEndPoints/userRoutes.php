@@ -76,27 +76,10 @@ switch ($router->method) {
                     }
                 
                 break;
-            case 'usersUpdateById':
-                    $isValid = $auth->isValidJWT($headers);
-                    if(!$isValid){  
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
 
-                    $isAdmin = $auth->checkAdmin($headers);
-                    if (!$isAdmin) {
-                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
-                    }
-
-                    $isExperation = $auth->ValidateTokenExpiration($headers);
-                    if($isExperation){
-                       $controller->update(UserMapper::fromArray(Response::arrayParse('php://input')));
-                    }else{
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
-                break;
             default:
                 echo "Ruta GET no encontrada: '$router->url'";
-        }
+   }
         break;
     case 'PUT':
         switch ($router->url) {
