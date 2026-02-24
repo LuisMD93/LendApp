@@ -72,9 +72,8 @@ switch ($router->method) {
                        $phone = $headers['param'];
                        echo '<pre>';var_dump($phone);echo '</pre>';
                        #$x = (string) $phone;
-                       $echo = (string) $phone;
+                       $echo = $phone."";
                        echo $echo;
-                       echo is_string($x);
                        #echo '<pre>';print_r($phone);echo '</pre>';die;
                        $controller->getByPhone($phone);
                     }else{
