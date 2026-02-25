@@ -16,7 +16,7 @@ class UpdateUser {
     }
 
     public function execute(UserDto $userDto): bool {
-            echo '<pre>';print_r($userDto);echo '</pre>';die;
+            echo '<pre>';print_r($this->userRepository->findUserById($userDto->getId()));echo '</pre>';die;
             if($this->userRepository->findUserById($userDto->getId())){
                 $userEntity = UserMapper::toEntity($userDto);
                 $response = $this->userRepository->updateUser($userEntity);
