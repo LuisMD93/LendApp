@@ -122,9 +122,9 @@ class UsersRepository implements IUserRepository {
              }
 
             throw new DataAccessException(
-                "Error al ejecutar operación en base de datos",
-                $e->getCode(),
-                $e->getMessage() 
+                 $e->getMessage(), #"Error al ejecutar operación en base de datos",
+                $e->getCode()
+               
             );
             
         } finally {
