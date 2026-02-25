@@ -85,8 +85,8 @@ class UsersRepository implements IUserRepository {
             
             $this->connection->beginTransaction(); // Iniciar una transacción
             
-            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_)"; 
-            $stmt = $this->connection->prepare($sql);    # :p_api_token_
+            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_,:p_api_token_)"; 
+            $stmt = $this->connection->prepare($sql);   
            
             $id = $user->getId();
             $user_name = $user->getUsername();
