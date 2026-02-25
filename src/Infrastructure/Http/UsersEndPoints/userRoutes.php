@@ -84,7 +84,21 @@ switch ($router->method) {
     case 'PUT':
         switch ($router->url) {
             case 'usersUpdateById':
-                $controller->update(UserMapper::fromArray(Response::arrayParse('php://input')));
+                    $isValid = $auth->isValidJWT($headers);
+                    if(!$isValid){  
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
+
+                    $isAdmin = $auth->checkAdmin($headers);
+                    if (!$isAdmin) {
+                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    }
+                    $isExperation = $auth->ValidateTokenExpiration($headers);
+                    if($isExperation){
+                      $controller->update(UserMapper::fromArray(Response::arrayParse('php://input')));
+                    }else{
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
                 break;
             default:
                 echo "Ruta PUT no encontrada: '$router->url'";

@@ -122,7 +122,7 @@ class UsersRepository implements IUserRepository {
              }
              
         } finally {
-            throw new DataAccessException($e->getMessage(),$e->getCode());
+            throw new DataAccessException($e->getMessage(),(int)$e->getCode());
             $this->connection = null;
         }
 
