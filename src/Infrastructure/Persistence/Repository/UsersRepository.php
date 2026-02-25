@@ -120,9 +120,9 @@ class UsersRepository implements IUserRepository {
             if($this->connection->inTransaction()) {
                $this->connection->rollBack();
              }
-             
+             throw new DataAccessException($e->getMessage(),(int)$e->getCode());
         } finally {
-            throw new DataAccessException($e->getMessage(),(int)$e->getCode());
+           
             $this->connection = null;
         }
 
