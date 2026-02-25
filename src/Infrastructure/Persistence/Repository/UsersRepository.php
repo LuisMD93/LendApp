@@ -78,54 +78,51 @@ class UsersRepository implements IUserRepository {
     }
 
      function updateUser(User $user) : bool {
-
         try {
 
-            $response = false;
-            
-            $this->connection->beginTransaction(); // Iniciar una transacción
-            
-            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_,:p_rol_user_)"; 
-            $stmt = $this->connection->prepare($sql);   
-           
-            $id = $user->getId();
-            $user_name = $user->getUsername();
-            $new_password= $user->getPassword();
-            $new_email = $user->getEmail();
-            $new_api_token= $user->getApiToken();
-            $new_phone = $user->getPhone();
+              $this->connection->beginTransaction();
 
-        
-            $stmt->bindParam(':p_id_', $id);
-            $stmt->bindParam(':p_user_name_', $user_name);
-            $stmt->bindParam(':p_password_', $new_password);
-            $stmt->bindParam(':p_email_', $new_email);
-            $stmt->bindParam(':p_token_', $new_api_token);
-            $stmt->bindParam(':p_phone_', $new_phone);
-            $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
-            
+                $sql = "CALL update_user_by_id(
+                    :p_id_, 
+                    :p_user_name_, 
+                    :p_email_, 
+                    :p_password_, 
+                    :p_token_,
+                    :p_phone_,
+                    :p_rol_user_,
+                    :rows_affected_
+                )";
+
+                $stmt = $this->connection->prepare($sql);
+
+                $stmt->bindValue(':p_user_name_', $user->getUsername(), PDO::PARAM_STR);
+                $stmt->bindValue(':p_email_', $user->getEmail(), PDO::PARAM_STR);
+                $stmt->bindValue(':p_password_', $user->getPassword(), PDO::PARAM_STR);
+                $stmt->bindValue(':p_api_token_', $user->getApiToken(), PDO::PARAM_STR);
+                $stmt->bindValue(':p_phone_', $user->getPhone(), PDO::PARAM_STR);
+                $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
+
+            $rowsAffected = 0;
+            $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
+
             $stmt->execute();
-            
-            if ($stmt->rowCount() > 0) {
+
+            if ($rowsAffected > 0) {
                 $this->connection->commit();
-                $response = true;
-            } else {
-                $this->connection->rollBack();
+                return true;
             }
-             
-            return $response;
-            
+
+            $this->connection->rollBack();
+            return false;
+
         } catch (Exception $e) {
 
-            if($this->connection->inTransaction()) {
-               $this->connection->rollBack();
-             }
-             throw new DataAccessException($e->getMessage(),(int)$e->getCode());
-        } finally {
-           
-            $this->connection = null;
-        }
+            if ($this->connection->inTransaction()) {
+                $this->connection->rollBack();
+            }
 
+            throw new DataAccessException($e->getMessage(),(int)$e->getCode());
+        }
     } 
 
     function searchUserByPhone(string $phone) : bool {
