@@ -19,8 +19,8 @@ class UpdateUser {
             
             if($this->userRepository->findUserById($userDto->getId())){
                 $userEntity = UserMapper::toEntity($userDto);
-                echo '<pre>';print_r($userEntity);echo '</pre>';die;
                 $response = $this->userRepository->updateUser($userEntity);
+                 echo '<pre>';print_r($response);echo '</pre>';die;
                 return $response;
             }
            
