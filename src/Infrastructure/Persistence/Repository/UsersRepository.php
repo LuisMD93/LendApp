@@ -8,6 +8,7 @@ use Domain\Models\User;
 use \PDO;
 use \Exception;
 use Shared\Helpers\Response;
+use Infrastructure\Exceptions\DataAccessException;
 
 class UsersRepository implements IUserRepository {
 
@@ -84,8 +85,8 @@ class UsersRepository implements IUserRepository {
             
             $this->connection->beginTransaction(); // Iniciar una transacción
             
-            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_, :p_api_token_)"; 
-            $stmt = $this->connection->prepare($sql);    
+            $sql = "call update_User_by_id(:p_id_, :p_user_name_, :p_password_, :p_email_, :p_token_,:p_phone_)"; 
+            $stmt = $this->connection->prepare($sql);    # :p_api_token_
            
             $id = $user->getId();
             $user_name = $user->getUsername();
@@ -101,7 +102,7 @@ class UsersRepository implements IUserRepository {
             $stmt->bindParam(':p_email_', $new_email);
             $stmt->bindParam(':p_token_', $new_api_token);
             $stmt->bindParam(':p_phone_', $new_phone);
-            $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
+            #$stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
             
             $stmt->execute();
             
@@ -115,10 +116,19 @@ class UsersRepository implements IUserRepository {
             return $response;
             
         } catch (Exception $e) {
-            $this->connection->rollBack();
-            echo "Error: " . $e->getMessage();
+
+            if($this->connection->inTransaction()) {
+               $this->connection->rollBack();
+             }
+
+            throw new DataAccessException(
+                "Error al ejecutar operación en base de datos",
+                $e->getCode(),
+                $e->getMessage() 
+            );
+            
         } finally {
-            return $response;
+           
             $this->connection = null;
         }
 
