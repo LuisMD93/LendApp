@@ -16,6 +16,7 @@ use Shared\Mapping\UserMapper;
 use Shared\Helpers\Constants\Constans;
 use Shared\Helpers\Validations\UserValidation;
 use Infrastructure\Firebase\JWT;
+use Infrastructure\Exceptions\DataAccessException;
 
 class UserController{
 
@@ -75,18 +76,22 @@ class UserController{
 
     function update(UserDto $user){
     
-        $result = UserValidation::validateRequiredFields(UserMapper::toArray($user),Constans::FIELDS);
-       
-        if (!empty($result)) {
-            return Response::sendResponse($result, 422);
-        }
- 
-        $response = $this->updateUser->execute($user);
+      try {
+            $result = UserValidation::validateRequiredFields(UserMapper::toArray($user),Constans::FIELDS);
+        
+            if (!empty($result)) {
+                return Response::sendResponse($result, 422);
+            }
+    
+            $response = $this->updateUser->execute($user);
 
-        if ($response) {
-            return Response::success($response, "data updated correctly");
-        }
-        return Response::error($response,"User not updated from the system, verify the ID -> ".$user->getId(),409);
+            if ($response) {
+                return Response::success($response, "data updated correctly");
+            }
+            return Response::error($response,"User not updated from the system, verify the ID -> ".$user->getId(),409);
+      } catch (DataAccessException $dataAccessException) {
+           return  Response::error(false,$dataAccessException->getMessage(),$dataAccessException->getCode());
+      }
   
     }
 

@@ -120,15 +120,9 @@ class UsersRepository implements IUserRepository {
             if($this->connection->inTransaction()) {
                $this->connection->rollBack();
              }
-
-            throw new DataAccessException(
-                 $e->getMessage(), #"Error al ejecutar operación en base de datos",
-                $e->getCode()
-               
-            );
-            
+             
         } finally {
-           
+            throw new DataAccessException();
             $this->connection = null;
         }
 
