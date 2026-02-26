@@ -87,7 +87,7 @@ class UsersRepository implements IUserRepository {
                     :p_user_name_, 
                     :p_email_, 
                     :p_password_, 
-                    :p_token_,
+                    :p_token_,#CORREGIR
                     :p_phone_,
                     :p_rol_user_,
                     :rows_affected_
@@ -95,6 +95,7 @@ class UsersRepository implements IUserRepository {
 
                 $stmt = $this->connection->prepare($sql);
 
+                $stmt->bindValue(':p_id_', $user->getId(), PDO::PARAM_INT);
                 $stmt->bindValue(':p_user_name_', $user->getUsername(), PDO::PARAM_STR);
                 $stmt->bindValue(':p_email_', $user->getEmail(), PDO::PARAM_STR);
                 $stmt->bindValue(':p_password_', $user->getPassword(), PDO::PARAM_STR);
