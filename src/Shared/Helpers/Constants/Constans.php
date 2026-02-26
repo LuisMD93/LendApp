@@ -8,6 +8,7 @@ class Constans {
     const RESPONSE_ERROR = 'error';
     const RESPONSE_RESULT  = 'response';
     const ERROR_MESSAGE = 'Ruta no encontrada';
+    const ERROR_MESSAGE_SERVER = 'Error interno del servidor, Intente nuevamente';
     const ERROR_MESSAGE_ACCESS = 'Forbidden 🔒. You do not have access to this route .';
     CONST WARNING_MESSAGE = 'Método no permitido';
     CONST UNAUTHORIZED_MESSAGE = 'Unauthorized!!, You do not have access to this route';

@@ -90,7 +90,7 @@ class UserController{
             }
             return Response::error($response,"User not updated from the system, verify the ID -> ".$user->getId(),409);
       } catch (DataAccessException $dataAccessException) {
-           return  Response::error(false,$dataAccessException->getMessage(),$dataAccessException->getCode());
+           return  Response::error(false,Constans::ERROR_MESSAGE_SERVER,(int)("DB_ERROR"));
       }
   
     }

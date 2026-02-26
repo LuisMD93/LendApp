@@ -87,7 +87,7 @@ class UsersRepository implements IUserRepository {
                     :p_user_name_, 
                     :p_email_, 
                     :p_password_, 
-                    :p_api_token_,
+                    :p_api_token_
                     :p_phone_,
                     :p_rol_user_,
                     :rows_affected_
