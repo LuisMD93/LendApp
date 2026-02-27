@@ -103,8 +103,8 @@ class UsersRepository implements IUserRepository {
 
                 $stmt->execute();
 
-$              $rowsAffected = (int) $stmt->fetch(PDO::FETCH_ASSOC)['rows_affected'];
-               $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
+                $rowsAffected = (int) $stmt->fetch(PDO::FETCH_ASSOC)['rows_affected'];
+                $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
 
                $stmt->execute();
             if ($rowsAffected > 0) {
