@@ -12,8 +12,9 @@ use Application\Exceptions\InvalidCredentialsException;
 use Shared\Helpers\Constants\Constans;
 
 
-Response::error(null,$router->url);
+
 $router = new Router();
+echo '<pre>';print_r($router->url);echo '</pre>';die;
 if (!str_starts_with($router->url, 'user')) {
     Response::success(true, "Bienvenido a mi app (LendApp API) By Luis Solis", 200);
     return;
