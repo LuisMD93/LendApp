@@ -81,17 +81,15 @@ class UsersRepository implements IUserRepository {
         try {
 
               $this->connection->beginTransaction();
-
-                $sql = "CALL update_user_by_id(
+                $sql = "SELECT update_user_by_id(
                     :p_id_, 
                     :p_user_name_, 
                     :p_email_, 
                     :p_password_, 
                     :p_api_token_,
                     :p_phone_,
-                    :p_rol_user_,
-                    :rows_affected_
-                )";
+                    :p_rol_user_
+                ) AS rows_affected";
 
                 $stmt = $this->connection->prepare($sql);
 
@@ -103,11 +101,12 @@ class UsersRepository implements IUserRepository {
                 $stmt->bindValue(':p_phone_', $user->getPhone(), PDO::PARAM_STR);
                 $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
 
-            $rowsAffected = 0;
-            $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
+                $stmt->execute();
 
-            $stmt->execute();
-            echo '<pre>';print_r($rowsAffected );echo '</pre>';die;
+$              $rowsAffected = (int) $stmt->fetch(PDO::FETCH_ASSOC)['rows_affected'];
+               $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
+
+               $stmt->execute();
             if ($rowsAffected > 0) {
                 $this->connection->commit();
                 return true;
