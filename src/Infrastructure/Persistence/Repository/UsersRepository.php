@@ -77,7 +77,7 @@ class UsersRepository implements IUserRepository {
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-     function updateUser(User $user) : bool {
+    function updateUser(User $user) : bool {
         try {
 
               $this->connection->beginTransaction();
@@ -107,7 +107,7 @@ class UsersRepository implements IUserRepository {
             $stmt->bindParam(':rows_affected_', $rowsAffected, PDO::PARAM_INT | PDO::PARAM_INPUT_OUTPUT, 10);
 
             $stmt->execute();
-
+            echo '<pre>';print_r($rowsAffected );echo '</pre>';die;
             if ($rowsAffected > 0) {
                 $this->connection->commit();
                 return true;
