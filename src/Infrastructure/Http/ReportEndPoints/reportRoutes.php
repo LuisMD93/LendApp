@@ -13,6 +13,7 @@ use Shared\Helpers\Constants\Constans;
 $router = new Router();
 
 if (!str_starts_with($router->url, 'report')) {
+    Response::success(true, "Bienvenido a mi app (LendApp API) By Luis Solis", 200);
     return;
 }
 
@@ -97,7 +98,7 @@ switch ($router->method) {
 
                     $isExperation = $auth->ValidateTokenExpiration($headers);
                     if($isExperation){
-                       $controller->delete($router->queryParams['id']);
+                       #$controller->delete($router->queryParams['id']);
                     }else{
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }
@@ -123,7 +124,7 @@ switch ($router->method) {
 
                     $isExperation = $auth->ValidateTokenExpiration($headers);
                     if($isExperation){
-                       $controller->changeStatus($router->queryParams['id']);
+                       #$controller->changeStatus($router->queryParams['id']);
                     }else{
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }                 

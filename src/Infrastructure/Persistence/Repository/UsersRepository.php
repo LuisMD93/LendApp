@@ -140,24 +140,43 @@ class UsersRepository implements IUserRepository {
         return $result !== false;
     }
 
-    function deleteUserById(int $Id) : bool{
+    // function deleteUserById(int $Id) : bool{
 
-        try{
+    //     try{
 
-            $sql="CALL delete_by_id_Users(:id)";
+    //         $sql="CALL delete_by_id_Users(:id)";
+    //         $stmt = $this->connection->prepare($sql);
+
+    //         $stmt->bindParam(':id', $Id, PDO::PARAM_INT);
+
+    //         $stmt->execute();
+
+    //     if ($stmt->rowCount() > 0) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    //     } catch(Exception $e) {
+            
+    //         return false;
+    //     } finally {
+    //         $this->connection = null;
+    //     }
+    // }
+
+    function deleteUserById(int $Id) : bool {
+
+        try {
+
+            $sql = "DELETE FROM users WHERE id = :id";
             $stmt = $this->connection->prepare($sql);
 
             $stmt->bindParam(':id', $Id, PDO::PARAM_INT);
-
             $stmt->execute();
 
-        if ($stmt->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-        } catch(Exception $e) {
-            
+            return $stmt->rowCount() > 0;
+
+        } catch (Exception $e) {
             return false;
         } finally {
             $this->connection = null;
