@@ -14,8 +14,9 @@ class DeleteUser {
     }
 
     public function execute(int $id): bool {
-        
+            
             $response = $this->userRepository->deleteUserById($id);
+            echo '<pre>';print_r(["Id"=>$id,"Response"=>$response]);echo '</pre>';die;
             return $response;  
         
     }

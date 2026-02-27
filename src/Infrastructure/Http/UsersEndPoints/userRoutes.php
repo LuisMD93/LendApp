@@ -151,7 +151,7 @@ switch ($router->method) {
     case 'DELETE':
         switch ($router->url) {
             case 'usersDeleteById':
-                $controller->delete($router->queryParams['id']);
+                $controller->delete($router->$headers['param']);
                 break;
             default:
                 echo "Ruta GET no encontrada: '$router->url'";

@@ -6,7 +6,7 @@ class Router {
 
     public string $method;
     public string $url;
-    public array $queryParams;
+    private array $queryParams;
     private array $headers;
 
     function __construct() {
