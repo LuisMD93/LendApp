@@ -16,7 +16,7 @@ use Shared\Helpers\Constants\Constans;
 $router = new Router();
 
 if($router->isRoot()) {
-    Response::success(true, "Bienvenido a mi app (LendApp API) By Luis Solis ".$router->url, 200);
+    Response::success(true, "Bienvenido a mi app (LendApp API) ©2026  - By Luis Solis Desarrollador & Software Engineer", 200);
     return; 
 }
 
