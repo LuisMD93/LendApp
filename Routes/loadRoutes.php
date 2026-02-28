@@ -24,7 +24,6 @@ function loadAllRoutes($dir) {
         if ($item === '.' || $item === '..') continue;
 
         $path = $dir . DIRECTORY_SEPARATOR . $item;
-        echo '<pre>';print_r(["Path"=>$path]);echo '</pre>';
         if (is_dir($path)) {
             loadAllRoutes($path); // Entra en UserEndPoints y ReportEndPoints
         } else if (pathinfo($path, PATHINFO_EXTENSION) === 'php') {

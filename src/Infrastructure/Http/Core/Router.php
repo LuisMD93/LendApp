@@ -36,4 +36,8 @@ class Router {
     public function getHeaders() : array{
         return $this->headers;
     }
+
+    public function isRoot() : bool {   
+        return empty($this->url);
+    }
 }
