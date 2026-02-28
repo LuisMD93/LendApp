@@ -16,7 +16,7 @@ use Shared\Helpers\Constants\Constans;
 $router = new Router();
 
 if($router->isRoot()) {
-    Response::success(true, "Bienvenido a mi app (LendApp API) ©2026  - By Luis Solis Desarrollador & Software Engineer", 200);
+    Response::success(true,"Bienvenido a mi app (LendApp API) ©2026  - By Luis Solis Desarrollador & Software Engineer",200);
     return; 
 }
 
@@ -156,8 +156,24 @@ switch ($router->method) {
     case 'DELETE':
         switch ($router->url) {
             case 'usersDeleteById':
-                $id = implode(",",$headers['param']);
-                $controller->delete($id);
+
+                $isValid = $auth->isValidJWT($headers);
+                    if(!$isValid){  
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
+
+                    $isAdmin = $auth->checkAdmin($headers);
+                    if (!$isAdmin) {
+                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    }
+
+                    $isExperation = $auth->ValidateTokenExpiration($headers);
+                    if($isExperation){
+                        $id = implode(",",$headers['param']);
+                        $controller->delete($id);
+                    }else{
+                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    }
                 break;
             default:
                 echo "Ruta GET no encontrada: '$router->url'";
