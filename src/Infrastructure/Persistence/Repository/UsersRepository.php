@@ -92,7 +92,7 @@ class UsersRepository implements IUserRepository {
                     :p_phone_,
                     :p_rol_user_
                 ) AS rows_affected";
-
+                $this->connection->exec("SET search_path TO lend_app_introduced");
                 $stmt = $this->connection->prepare($sql);
 
                 $stmt->bindValue(':p_id_', $user->getId(), PDO::PARAM_INT);
@@ -130,7 +130,7 @@ class UsersRepository implements IUserRepository {
     function searchUserByPhone(string $phone) : bool {
         // 1. En Postgres usamos SELECT para funciones que devuelven resultados
         $sql = "SELECT id FROM search_by_phone_user(:p_phone)";
-    
+         $this->connection->exec("SET search_path TO lend_app_introduced");
          $stmt = $this->connection->prepare($sql);
          $stmt->bindParam(':p_phone', $phone, \PDO::PARAM_STR);
          $stmt->execute();
@@ -171,8 +171,9 @@ class UsersRepository implements IUserRepository {
         try {
 
             $sql = "DELETE FROM users WHERE id = :id";
+            $this->connection->exec("SET search_path TO lend_app_introduced");
             $stmt = $this->connection->prepare($sql);
-
+    
             $stmt->bindParam(':id', $Id, PDO::PARAM_INT);
             $stmt->execute();
 
@@ -224,7 +225,7 @@ class UsersRepository implements IUserRepository {
               AND phone = :p_phone
         ) AS user_exists
     ";
-
+    $this->connection->exec("SET search_path TO lend_app_introduced");
     $stmt = $this->connection->prepare($sql);
     $stmt->bindParam(':p_email', $email, PDO::PARAM_STR);
     $stmt->bindParam(':p_phone', $phone, PDO::PARAM_STR);
@@ -260,7 +261,7 @@ class UsersRepository implements IUserRepository {
             AND REPLACE(phone, '+57 ', '') = :p_phone
             LIMIT 1";
 
-
+        $this->connection->exec("SET search_path TO lend_app_introduced");
         $stmt = $this->connection->prepare($sql);
 
         $stmt->bindParam(':p_user_name', $user_name, PDO::PARAM_STR);
