@@ -69,6 +69,7 @@ class UsersRepository implements IUserRepository {
 
     function getAllUsers() : array {
         // En Postgres, las funciones que devuelven tablas se consultan con SELECT
+        $this->connection->exec("SET search_path TO lend_app_introduced");
         $sql = "SELECT * FROM get_all_users()"; 
     
         $stmt = $this->connection->prepare($sql);

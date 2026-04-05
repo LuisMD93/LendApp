@@ -43,23 +43,23 @@ switch ($router->method) {
                 break;
             case 'users':
 
-                    $isValid = $auth->isValidJWT($headers);
-                    if(!$isValid){  
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
+                    // $isValid = $auth->isValidJWT($headers);
+                    // if(!$isValid){  
+                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    // }
                  
-                    $isAdmin = $auth->checkAdmin($headers);
-                    if (!$isAdmin) {
-                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
-                    }
+                    // $isAdmin = $auth->checkAdmin($headers);
+                    // if (!$isAdmin) {
+                    //    Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    // }
 
 
-                    $isExperation = $auth->ValidateTokenExpiration($headers);
-                    if($isExperation){
+                    // $isExperation = $auth->ValidateTokenExpiration($headers);
+                    // if($isExperation){
                         $controller->show();
-                    }else{
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
+                    // }else{
+                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    // }
                 break;
             case 'usersByPhone':
                     $isValid = $auth->isValidJWT($headers);
@@ -112,22 +112,22 @@ switch ($router->method) {
     case 'POST':
         switch ($router->url) {
             case 'user/Add':
-                    $isValid = $auth->isValidJWT($headers);
-                    if(!$isValid){  
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
+                    // $isValid = $auth->isValidJWT($headers);
+                    // if(!$isValid){  
+                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    // }
 
-                    $isAdmin = $auth->checkAdmin($headers);
-                    if (!$isAdmin) {
-                       Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
-                    }
+                    // $isAdmin = $auth->checkAdmin($headers);
+                    // if (!$isAdmin) {
+                    //    Response::error(false,Constans::ERROR_MESSAGE_ACCESS,403);
+                    // }
 
-                    $isExperation = $auth->ValidateTokenExpiration($headers);
-                    if($isExperation){
+                    // $isExperation = $auth->ValidateTokenExpiration($headers);
+                    // if($isExperation){
                       $controller->save(UserMapper::fromArray(Response::arrayParse('php://input')));
-                    }else{
-                        Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
-                    }
+                    // }else{
+                    //     Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
+                    // }
                        
                 break;
             case 'user/login':
