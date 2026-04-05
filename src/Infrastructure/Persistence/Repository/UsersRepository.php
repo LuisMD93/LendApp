@@ -25,7 +25,8 @@ class UsersRepository implements IUserRepository {
     function createUser(User $user): bool {
     try {
         $this->connection->beginTransaction();
-
+        // Usar schema propio
+        $this->connection->exec("SET search_path TO lend_app_introduced");
         // Para PROCEDURES en Postgres se usa CALL
         $sql = "CALL add_user(:p_user_name_, :p_email_, :p_password_, :p_api_token_, :p_phone_,:p_rol_user_)";
         $stmt = $this->connection->prepare($sql);
@@ -38,7 +39,7 @@ class UsersRepository implements IUserRepository {
         $stmt->bindValue(':p_rol_user_', $user->getRoleEnum()->value, PDO::PARAM_STR);
 
         $result = $stmt->execute();
-        echo '<pre>';print_r($result);echo '</pre>';
+        //echo '<pre>';print_r($result);echo '</pre>';
         // En un PROCEDURE, si no hubo excepción, asumimos éxito.
         // commit() confirmará la inserción en Postgres.
         $this->connection->commit();
