@@ -27,11 +27,12 @@ class ReportRepository implements IReportRepository  {
             $response = false;
             
                 $this->connection->beginTransaction(); 
+                    // Usar schema propio
+                    $this->connection->exec("SET search_path TO lend_app_introduced");
+                    $sql = "call add_report(:p_location_name_,:p_product_Name_,:p_amount_,:p_description_,:p_lend_status_,:p_id_user_)";
+                    $stmt = $this->connection->prepare($sql);
                 
-                $sql = "call add_report(:p_location_name_,:p_product_Name_,:p_amount_,:p_description_,:p_lend_status_,:p_id_user_)";
-                $stmt = $this->connection->prepare($sql);
             
-        
                     $loan_location = $report->getLoan_location(); 
                     $productName = $report->getProducName();
                     $amount = $report->getAmount();
