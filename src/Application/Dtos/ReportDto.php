@@ -33,7 +33,7 @@ class ReportDto implements JsonSerializable{
     }
 
 
-    public function __construct(int $id,string $loan_location = 'novedad',string $productName,int $amount,string $description   , bool $lendStatus,int $id_user     //RoleEnum $role = RoleEnum::UNDEFINED,
+    public function __construct(int $id,string $loan_location,string $productName,int $amount,string $description   , bool $lendStatus,int $id_user     //RoleEnum $role = RoleEnum::UNDEFINED,
         ,DateTime $creationDate = new DateTime('0000-00-00 00:00:00'),
         DateTime $modificationDate = new DateTime('0000-00-00 00:00:00')) {
 
