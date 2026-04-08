@@ -25,7 +25,8 @@ class ReportMapper {
     }
 
     public static function toDto(Report $entity): ReportDto {
-        return new ReportDto(
+        echo '<pre>';print_r($entity);echo '</pre>';die;
+        return new ReportDto( #revidar aqui
             $entity->getId(),
             $entity->getLoan_location(),
             $entity->getProducName(),
