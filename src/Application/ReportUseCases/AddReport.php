@@ -2,7 +2,7 @@
 
 namespace Application\ReportUseCases;
 
-use Application\DTOs\ReportDto;
+use Application\Dtos\ReportDto;
 use Domain\Repository\IReportRepository;
 use Application\Mappers\ReportMapper;
 
