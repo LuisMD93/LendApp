@@ -2,7 +2,7 @@
 
 namespace Shared\Mapping;
 
-use Application\DTOs\ReportDto;
+use Application\Dtos\ReportDto;
 
 use DateTime;
 
