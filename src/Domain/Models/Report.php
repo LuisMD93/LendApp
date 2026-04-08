@@ -17,7 +17,7 @@ class Report {
     private DateTime $modificationDate;
 
 
-    public function __construct(int $id,string $loan_location = 'novedad',string $productName,int $amount,string $description   , bool $lendStatus,int $id_user     //RoleEnum $role = RoleEnum::UNDEFINED,
+    public function __construct(int $id,string $loan_location = 'novedad',string $productName,int $amount,string $description   , bool $lendStatus,int $id_user
         ,DateTime $creationDate =new DateTime('now', new DateTimeZone('America/Bogota')),
         DateTime $modificationDate = new DateTime('now', new DateTimeZone('America/Bogota'))) {
 
