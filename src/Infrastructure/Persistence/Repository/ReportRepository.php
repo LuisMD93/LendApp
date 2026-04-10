@@ -8,6 +8,7 @@ use Domain\Repository\IReportRepository;
 use Infrastructure\Persistence\Doctrine\Connection;
 use \PDO;
 use \Exception;
+use \PDOException;
 
 
 class ReportRepository implements IReportRepository  {
@@ -64,121 +65,119 @@ class ReportRepository implements IReportRepository  {
        
     function getAllReport(): array {
 
-        $sql = "call get_all_reports()";
+        $sql = "SELECT * FROM get_all_reports()";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    function deleteReportById(int $Id) : bool {
-    
-     try{
+    function deleteReportById(int $Id): bool {
+        $response = false;
 
-            $sql="CALL delete_report(:_id)";
+        try {
+            $this->connection->beginTransaction();
+
+            $sql = "CALL delete_report(:_id)";
             $stmt = $this->connection->prepare($sql);
 
             $stmt->bindParam(':_id', $Id, PDO::PARAM_INT);
-
             $stmt->execute();
 
-            if ($stmt->rowCount() > 0) {
-                return true;
-            } else {
-                return false;
+            $this->connection->commit();
+            $response = true;
+
+        } catch (PDOException $e) {
+            if ($this->connection->inTransaction()) {
+                $this->connection->rollBack();
             }
-        } catch(Exception $e) {
-            
-            return false;
+            error_log("Error deleteReportById: " . $e->getMessage());
+            $response = false;
+
         } finally {
             $this->connection = null;
         }
-            return true;
+
+        return $response;
     }
 
-    function existsReport(int $idReport ) : bool {
-
-        try{
-            $sql = "CALL exists_report(:_idReport)";
+    function existsReport(int $idReport): bool {
+        try {
+            $sql = "SELECT exists_report(:_idReport) as exists";
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':_idReport', $idReport, PDO::PARAM_INT);
 
             $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($stmt->rowCount() > 0) {
-                return true;
-            } else {
-                $this->connection = null;
-                return false;
-                
-            }
-        } catch(Exception $e) {
-            
+            return (bool)$result['exists'];
+
+        } catch (Exception $e) {
+            error_log("Error existsReport: " . $e->getMessage());
             return false;
         } finally {
-           
+            $this->connection = null;
         }
-            return true;
-    }
+}
 
     function getReportById(int $report) : bool {
         return true;
     }
     
-    function updateReport(Report $report) :bool {
+    function updateReport(Report $report): bool {
+        $response = false;
 
         try {
-            
-            $response = false;
-            $this->connection->beginTransaction(); // Iniciar una transacción
-            
-            $sql = "call update_Report_by_id(:p_id, :p_location,:p_name ,:p_amount, :p_description)"; 
-            $stmt = $this->connection->prepare($sql);    
-           
+            $this->connection->beginTransaction();
+
+            $sql = "CALL update_report_by_id(:p_id, :p_location, :p_name, :p_amount, :p_description)";
+            $stmt = $this->connection->prepare($sql);
+
             $id = $report->getId();
             $new_location = $report->getLoan_location();
             $new_product_name = $report->getProducName();
             $new_amount = $report->getAmount();
             $new_description = $report->getDescription();
- 
+
             $stmt->bindParam(':p_id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':p_location', $new_location, PDO::PARAM_STR);
             $stmt->bindParam(':p_name', $new_product_name, PDO::PARAM_STR);
             $stmt->bindParam(':p_amount', $new_amount, PDO::PARAM_INT);
             $stmt->bindParam(':p_description', $new_description, PDO::PARAM_STR);
-            
+
             $stmt->execute();
-            
-            if ($stmt->rowCount() > 0) {
-                $this->connection->commit();
-                $response = true;
-            } else {
+
+            // ✔ En PostgreSQL: si no hay excepción = éxito
+            $this->connection->commit();
+            $response = true;
+
+        } catch (PDOException $e) {
+            if ($this->connection->inTransaction()) {
                 $this->connection->rollBack();
             }
-             
-            return $response;
-            
-        } catch (Exception $e) {
-            $this->connection->rollBack();
-            echo "Error: " . $e->getMessage();
+            error_log("Error updateReport: " . $e->getMessage());
+            $response = false;
+
         } finally {
-            return $response;
             $this->connection = null;
         }
+
+        return $response;
     }
  
-    function changeStatus(int $idReport) : bool {
+    function changeStatus(int $idReport): bool {
         try {
-
-            $sql = "CALL ChangeToPaidStatus(:id, @affected)";
+            // Llamamos al procedure
+            $sql = "CALL change_to_paid_status(:id)";
             $stmt = $this->connection->prepare($sql);
 
             $stmt->bindParam(':id', $idReport, PDO::PARAM_INT);
             $stmt->execute();
 
-            $result = $this->connection->query("SELECT @affected AS affected")->fetch(PDO::FETCH_ASSOC);
-            return $result['affected'] > 0;
+            // Si no lanza excepción = éxito
+            return true;
 
         } catch (Exception $e) {
+            error_log("Error changeStatus: " . $e->getMessage());
             return false;
         }
     }
