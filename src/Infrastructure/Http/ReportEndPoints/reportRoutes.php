@@ -128,7 +128,8 @@ switch ($router->method) {
 
                     $isExperation = $auth->ValidateTokenExpiration($headers);
                     if($isExperation){
-                       #$controller->changeStatus($router->queryParams['id']);
+                       $queryParam = implode(",",$headers['param']);
+                       $controller->changeStatus($queryParas);
                     }else{
                         Response::error(false,Constans::ERROR_MESSAGE_TOKEN,401);
                     }                 
