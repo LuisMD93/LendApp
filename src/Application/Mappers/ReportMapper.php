@@ -40,7 +40,6 @@ class ReportMapper {
 
     public static function fromArrayEntity(array $reports) {
         $reportArray = [];
-        echo '<pre>';print_r($reports);echo '</pre>';die;
         foreach ($reports as $report) {
           $reportArray[] =  new Report(
                 $report['id'],  
@@ -48,10 +47,10 @@ class ReportMapper {
                 $report['product_name'],
                 $report['amount'],
                 $report['description'],
-                $report['lendStatus'],
+                $report['lend_starus'],
                 $report['id_user'],
-                new DateTime($report['creationdate']), 
-                new DateTime($report['modificationdate']),
+                new DateTime($report['creation_date']), 
+                new DateTime($report['modification_date']),
 
 
             );
