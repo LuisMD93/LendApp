@@ -47,7 +47,7 @@ class ReportMapper {
                 $report['product_name'],
                 $report['amount'],
                 $report['description'],
-                $report['lend_starus'],
+                $report['lend_status'],
                 $report['id_user'],
                 new DateTime($report['creation_date']), 
                 new DateTime($report['modification_date']),
