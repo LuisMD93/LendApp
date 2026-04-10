@@ -40,6 +40,7 @@ class ReportMapper {
 
     public static function fromArrayEntity(array $reports) {
         $reportArray = [];
+        echo '<pre>';print_r($reports);echo '</pre>';die;
         foreach ($reports as $report) {
           $reportArray[] =  new Report(
                 $report['id'],  
