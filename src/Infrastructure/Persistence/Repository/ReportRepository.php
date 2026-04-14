@@ -185,14 +185,14 @@ class ReportRepository implements IReportRepository  {
     function validatePaymentStatus(int $Id) : bool {
 
         try {
-            $sql = "CALL PaymentStatus(:p_id)";
+            $sql = "SELECT PaymentStatus(:p_id) AS result";
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':p_id', $Id, PDO::PARAM_INT);
             $stmt->execute();
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $result !== false;
+            return $result['result'] ?? false;
         } catch (Exception $e) {
             return false;
         }
