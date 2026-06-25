@@ -34,7 +34,7 @@ class ReportValidation {
 
     public static function Validar_id($requestParamId) {
             // Verifica si la cadena contiene solo dígitos
-            if (preg_match('/^[0-9]+$/', $requestParamId)) {
+            if (preg_match('/^[1-9][0-9]*$/', $requestParamId)) {
                 return true; // La ID es válida
             } else {
                 return false; // La ID contiene caracteres no permitidos
