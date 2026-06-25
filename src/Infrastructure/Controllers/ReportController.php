@@ -60,6 +60,10 @@ class ReportController{
 
     function changeStatus(int $id) {  
 
+        if(!ReportValidation::Validar_id($id)){
+            return Response::error($id,"There is an error in the parameter; it must be numeric.",400);
+        }
+
         $result = $this->changeLoanStatus->execute($id);
         if($result){
           return Response::success($result,"debt paid successfully");
