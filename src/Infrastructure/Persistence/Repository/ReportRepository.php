@@ -62,7 +62,7 @@ class ReportRepository implements IReportRepository  {
                     'creationDate' => $creationDate,
                     'modificationDate' => $modificationDate
                 ], JSON_PRETTY_PRINT);
-                exit;
+              
 
                 $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
                 $stmt->bindParam(':p_product_Name_', $productName, PDO::PARAM_STR);
