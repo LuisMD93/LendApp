@@ -20,11 +20,11 @@ class ReportRepository implements IReportRepository  {
         $db = Connection::getInstance();
         $this->connection = $db->getConnection();
     }
-    
+
     function createReport(Report $report): bool {
 
         $response = false;
-
+        echo '<pre>'; print_r($report); echo '</pre>';die;
         try {
             $this->connection->beginTransaction();
 
