@@ -52,16 +52,16 @@ class ReportRepository implements IReportRepository  {
 
                 $creationDate = $report->getCreationDate()->format('Y-m-d H:i:s');
                 $modificationDate = $report->getModificationDate()->format('Y-m-d H:i:s');
-                echo json_encode([
-                    'loan_location' => $loan_location,
-                    'productName' => $productName,
-                    'amount' => $amount,
-                    'lendStatus' => $lendStatus,
-                    'description' => $description,
-                    'id_user' => $id_user,
-                    'creationDate' => $creationDate,
-                    'modificationDate' => $modificationDate
-                ], JSON_PRETTY_PRINT);
+                // echo json_encode([
+                //     'loan_location' => $loan_location,
+                //     'productName' => $productName,
+                //     'amount' => $amount,
+                //     'lendStatus' => $lendStatus,
+                //     'description' => $description,
+                //     'id_user' => $id_user,
+                //     'creationDate' => $creationDate,
+                //     'modificationDate' => $modificationDate
+                // ], JSON_PRETTY_PRINT);
               
 
                 $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
