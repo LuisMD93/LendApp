@@ -75,7 +75,7 @@ class ReportRepository implements IReportRepository  {
                 $stmt->bindParam(':p_modification_date', $modificationDate, PDO::PARAM_STR);
 
                 $stmt->execute();
-                echo json_encode([$stmt->errorInfo()], JSON_PRETTY_PRINT);
+                echo json_encode([$stmt->errorInfo()], JSON_PRETTY_PRINT);die;
 
                 $this->connection->commit();
                 $response = true;
