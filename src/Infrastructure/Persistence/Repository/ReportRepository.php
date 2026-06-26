@@ -10,7 +10,7 @@ use \PDO;
 use \Exception;
 use \PDOException;
 
-
+#CORREGIR EL FRONTEND FLUTTER NO ALCENA POR QUE ESTA COMENTADO Y ADEMAS CORREGIR LA FECHA Y HORA LAMACENADA EN LA BD DESDE ELL BACKEND
 class ReportRepository implements IReportRepository  {
 
     private $connection;
@@ -23,6 +23,7 @@ class ReportRepository implements IReportRepository  {
     
     function createReport(Report $report): bool {
         $response = false;
+        echo '<pre>'; print_r($report);echo '</pre>';die;
         try {
             $this->connection->beginTransaction(); 
 
