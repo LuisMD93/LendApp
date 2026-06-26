@@ -22,43 +22,58 @@ class ReportRepository implements IReportRepository  {
     }
     
     function createReport(Report $report): bool {
-        $response = false;
-        echo '<pre>'; print_r($report);echo '</pre>';die;
-        try {
-            $this->connection->beginTransaction(); 
 
-            // Usar schema propio
+        $response = false;
+
+        try {
+            $this->connection->beginTransaction();
+
             $this->connection->exec("SET search_path TO lend_app_introduced");
 
-            $sql = "CALL add_report(:p_location_name_, :p_product_Name_, :p_amount_, :p_description_, :p_lend_status_, :p_id_user_)";
-            $stmt = $this->connection->prepare($sql);
+            $sql = "CALL add_report(
+                :p_location_name_,
+                :p_product_Name_,
+                :p_amount_,
+                :p_description_,
+                :p_lend_status_,
+                :p_id_user_,
+                :p_creation_date,
+                :p_modification_date
+            )";
 
-            $loan_location = $report->getLoan_location(); 
-            $productName = $report->getProducName();
-            $amount = $report->getAmount();
-            $lendStatus = $report->getLendStatus() ? 1 : 0; // usar int para PostgreSQL
-            $description = $report->getDescription();
-            $id_user = $report->getIdUser();
+                $stmt = $this->connection->prepare($sql);
 
-            $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
-            $stmt->bindParam(':p_product_Name_', $productName, PDO::PARAM_STR);
-            $stmt->bindParam(':p_amount_', $amount, PDO::PARAM_INT);
-            $stmt->bindParam(':p_description_', $description, PDO::PARAM_STR);
-            $stmt->bindParam(':p_lend_status_', $lendStatus, PDO::PARAM_INT);  
-            $stmt->bindParam(':p_id_user_', $id_user, PDO::PARAM_INT);
+                $loan_location = $report->getLoan_location();
+                $productName = $report->getProducName();
+                $amount = $report->getAmount();
+                $lendStatus = $report->getLendStatus() ? true : false;
+                $description = $report->getDescription();
+                $id_user = $report->getIdUser();
 
-            $stmt->execute();
+                $creationDate = $report->getCreationDate()->format('Y-m-d H:i:s');
+                $modificationDate = $report->getModificationDate()->format('Y-m-d H:i:s');
 
-            // En PostgreSQL CALL no devuelve filas, así que asumimos éxito si no lanza excepción
-            $this->connection->commit();
-            $response = true;
+                $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
+                $stmt->bindParam(':p_product_Name_', $productName, PDO::PARAM_STR);
+                $stmt->bindParam(':p_amount_', $amount, PDO::PARAM_INT);
+                $stmt->bindParam(':p_description_', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':p_lend_status_', $lendStatus, PDO::PARAM_BOOL);
+                $stmt->bindParam(':p_id_user_', $id_user, PDO::PARAM_INT);
 
-        } catch (Exception $e) {
-            $this->connection->rollBack();
-            error_log("Error createReport: " . $e->getMessage());
-        } finally {
-            $this->connection = null;
-        }
+                $stmt->bindParam(':p_creation_date', $creationDate, PDO::PARAM_STR);
+                $stmt->bindParam(':p_modification_date', $modificationDate, PDO::PARAM_STR);
+
+                $stmt->execute();
+
+                $this->connection->commit();
+                $response = true;
+
+            } catch (Exception $e) {
+                $this->connection->rollBack();
+                error_log("Error createReport: " . $e->getMessage());
+            } finally {
+                $this->connection = null;
+            }
 
         return $response;
     }
