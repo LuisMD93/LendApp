@@ -52,39 +52,29 @@ class ReportRepository implements IReportRepository  {
 
                 $creationDate = $report->getCreationDate()->format('Y-m-d H:i:s');
                 $modificationDate = $report->getModificationDate()->format('Y-m-d H:i:s');
-                // echo json_encode([
-                //     'loan_location' => $loan_location,
-                //     'productName' => $productName,
-                //     'amount' => $amount,
-                //     'lendStatus' => $lendStatus,
-                //     'description' => $description,
-                //     'id_user' => $id_user,
-                //     'creationDate' => $creationDate,
-                //     'modificationDate' => $modificationDate
-                // ], JSON_PRETTY_PRINT);
-              
+                echo json_encode([
+                    'loan_location' => $loan_location,
+                    'productName' => $productName,
+                    'amount' => $amount,
+                    'lendStatus' => $lendStatus,
+                    'description' => $description,
+                    'id_user' => $id_user,
+                    'creationDate' => $creationDate,
+                    'modificationDate' => $modificationDate
+                ], JSON_PRETTY_PRINT);
+                die;
 
-                // $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
-                // $stmt->bindParam(':p_product_Name_', $productName, PDO::PARAM_STR);
-                // $stmt->bindParam(':p_amount_', $amount, PDO::PARAM_INT);
-                // $stmt->bindParam(':p_description_', $description, PDO::PARAM_STR);
-                // $stmt->bindParam(':p_lend_status_', $lendStatus, PDO::PARAM_BOOL);
-                // $stmt->bindParam(':p_id_user_', $id_user, PDO::PARAM_INT);
+                $stmt->bindParam(':p_location_name_', $loan_location, PDO::PARAM_STR);
+                $stmt->bindParam(':p_product_Name_', $productName, PDO::PARAM_STR);
+                $stmt->bindParam(':p_amount_', $amount, PDO::PARAM_INT);
+                $stmt->bindParam(':p_description_', $description, PDO::PARAM_STR);
+                $stmt->bindParam(':p_lend_status_', $lendStatus, PDO::PARAM_BOOL);
+                $stmt->bindParam(':p_id_user_', $id_user, PDO::PARAM_INT);
 
-                // $stmt->bindParam(':p_creation_date', $creationDate, PDO::PARAM_STR);
-                // $stmt->bindParam(':p_modification_date', $modificationDate, PDO::PARAM_STR);
-                $stmt->bindValue(':p_location_name_', $loan_location, PDO::PARAM_STR);
-$stmt->bindValue(':p_product_Name_', $productName, PDO::PARAM_STR);
-$stmt->bindValue(':p_amount_', $amount, PDO::PARAM_INT);
-$stmt->bindValue(':p_description_', $description, PDO::PARAM_STR);
-$stmt->bindValue(':p_lend_status_', $lendStatus, PDO::PARAM_BOOL);
-$stmt->bindValue(':p_id_user_', $id_user, PDO::PARAM_INT);
-
-$stmt->bindValue(':p_creation_date', $creationDate, PDO::PARAM_STR);
-$stmt->bindValue(':p_modification_date', $modificationDate, PDO::PARAM_STR);
-                var_dump($stmt->debugDumpParams());
+                $stmt->bindParam(':p_creation_date', $creationDate, PDO::PARAM_STR);
+                $stmt->bindParam(':p_modification_date', $modificationDate, PDO::PARAM_STR);
                 $stmt->execute();
-                echo json_encode([$stmt->errorInfo()], JSON_PRETTY_PRINT);die;
+
 
                 $this->connection->commit();
                 $response = true;
