@@ -18,7 +18,7 @@ class Response{
    static function arrayParse($request) : array {
         
         $data = json_decode(file_get_contents($request), true); // Obtener datos JSON del cuerpo de la solicitud
-        echo '<pre>';print($data);echo'</pre>';die;
+        var_dump($data);
        // Response::If_startDate_Is_Empty($data);// si trabajas con fechas y  quieres ajustarlo a la fecha local
               echo json_encode([
                     "origin" => "Response",
