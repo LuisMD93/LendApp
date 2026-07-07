@@ -79,9 +79,17 @@ class ReportRepository implements IReportRepository  {
     }
   
        
+    // function getAllReport(): array {
+
+    //     $sql = "SELECT * FROM get_all_reports()";
+    //     $stmt = $this->connection->prepare($sql);
+    //     $stmt->execute();
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+
     function getAllReport(): array {
 
-        $sql = "SELECT * FROM get_all_reports()";
+        $sql = "SELECT * FROM get_all_reports_v2()";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
