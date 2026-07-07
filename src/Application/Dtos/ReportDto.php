@@ -26,7 +26,7 @@ class ReportDto implements JsonSerializable{
             'amount' => $this->amount,
             'lendStatus' => $this->lendStatus,
             'description' => $this->description,
-            'user' => $this->user,
+            'userData' => $this->user,
             'creationDate' => $this->creationDate->format('Y-m-d H:i:s'),
             'modificationDate' => $this->modificationDate->format('Y-m-d H:i:s'),
         ];
