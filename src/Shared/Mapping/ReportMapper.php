@@ -18,8 +18,9 @@ class ReportMapper {
                 'description' => $report->getDescription(),
   
                 'lendStatus' => $report->getLendStatus(),
-                'id_user' => $report->getIdUser()   
-        ];
+                'id_user' => $report->getUser()->getId()
+                ];
+                
     }
 
     
@@ -32,7 +33,7 @@ class ReportMapper {
                 $data["amount"],    
                 $data["description"],    
                 $data["lendStatus"] , 
-                $data["id_user"],  
+                $data["userData"],  
                 new DateTime(),
                 new DateTime()  
         );
