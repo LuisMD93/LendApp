@@ -4,6 +4,7 @@ namespace Application\Mappers;
 
 use Application\Dtos\ReportDto;
 use Application\Dtos\UserDto;
+use Application\Dtos\UserSummaryDto;
 use Domain\Models\Report;
 use Domain\Models\User;
 use DateTime;
@@ -31,7 +32,8 @@ class ReportMapper {
     }
 
     public static function toDto(Report $entity): ReportDto {
-        $userDto = new UserDto(
+
+        $userDto = new UserSummaryDto(
             $entity->getUser()->getId(),
             $entity->getUser()->getUsername()
         );
@@ -79,7 +81,7 @@ class ReportMapper {
         $reportArrayDto = [];
         foreach ($reports as $reportDto) {  
             
-        $userDto = new UserDto(
+        $userDto = new UserSummaryDto(
             $reportDto->getUser()->getId(),
             $reportDto->getUser()->getUsername()
         );

@@ -13,7 +13,7 @@ class ReportDto implements JsonSerializable{
         public int $amount;
         public bool $lendStatus;
         public string $description;
-        public UserDto $user;
+        public UserSummaryDto $user;
         public DateTime $modificationDate;
 
 
@@ -33,7 +33,7 @@ class ReportDto implements JsonSerializable{
     }
 
 
-    public function __construct(int $id,string $loan_location,string $productName,int $amount,string $description   , bool $lendStatus,UserDto $user     //RoleEnum $role = RoleEnum::UNDEFINED,
+    public function __construct(int $id,string $loan_location,string $productName,int $amount,string $description   , bool $lendStatus,UserSummaryDto $user     //RoleEnum $role = RoleEnum::UNDEFINED,
         ,DateTime $creationDate = new DateTime('0000-00-00 00:00:00'),
         DateTime $modificationDate = new DateTime('0000-00-00 00:00:00')) {
 
@@ -57,11 +57,11 @@ class ReportDto implements JsonSerializable{
             return $this->id;
         }
 
-        public function setUser(UserDto $user) : void{
+        public function setUser(UserSummaryDto $user) : void{
         $this->user = $user;
         }
 
-        public function getUser() : UserDto {
+        public function getUser() : UserSummaryDto {
             return $this->user;
         }
 
