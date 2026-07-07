@@ -25,7 +25,6 @@ class ReportMapper {
 
     
     public static function fromArray(array $data) {
-        var_dump($data["userData"]);die;
         return new ReportDto(
                 $data["id"] ?? 0,
                 $data["location"],
@@ -33,7 +32,7 @@ class ReportMapper {
                 $data["amount"],    
                 $data["description"],    
                 $data["lendStatus"] , 
-                $data["userData"],  
+                $data["userData"]['id'],  
                 new DateTime(),
                 new DateTime()  
         );
