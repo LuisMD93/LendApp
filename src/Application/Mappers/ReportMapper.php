@@ -3,13 +3,20 @@
 namespace Application\Mappers; 
 
 use Application\Dtos\ReportDto;
+use Application\Dtos\UserDto;
 use Domain\Models\Report;
+use Domain\Models\User;
 use DateTime;
 
 class ReportMapper {
 
 
     public static function toEntity(ReportDto $dto): Report {
+        $user = new User(
+            $dto->user->getId(),
+            $dto->user->getUsername()
+        );
+
         return new Report(
             $dto->id,
             $dto->loan_location,
@@ -17,30 +24,40 @@ class ReportMapper {
             $dto->amount,
             $dto->description,
             $dto->lendStatus,
-            $dto->id_user,
+            $user,
             $dto->creationDate,
             $dto->modificationDate
-
         );
     }
 
     public static function toDto(Report $entity): ReportDto {
-        return new ReportDto( 
+        $userDto = new UserDto(
+            $entity->getUser()->getId(),
+            $entity->getUser()->getUsername()
+        );
+
+        return new ReportDto(
             $entity->getId(),
-            $entity->getLoan_location(),
+            $entity->getLoan_Location(),
             $entity->getProducName(),
             $entity->getAmount(),
             $entity->getDescription(),
             $entity->getLendStatus(),
-            $entity->getIdUser(),
+            $userDto,
             $entity->getCreationDate(),
             $entity->getModificationDate()
-           );
+        );
     }
 
     public static function fromArrayEntity(array $reports) {
         $reportArray = [];
         foreach ($reports as $report) {
+
+         $user = new User(
+            $report['id_user'],
+            $report['username']
+          );
+
           $reportArray[] =  new Report(
                 $report['id'],  
                 $report['loan_location'],
@@ -48,7 +65,7 @@ class ReportMapper {
                 $report['amount'],
                 $report['description'],
                 $report['lend_status'],
-                $report['id_user'],
+                $user,
                 new DateTime($report['creation_date']), 
                 new DateTime($report['modification_date']),
 
@@ -68,7 +85,7 @@ class ReportMapper {
                 $reportDto->getAmount(),
                 $reportDto->getDescription(),
                 $reportDto->getLendStatus(),
-                $reportDto->getIdUser(),  
+                $reportDto->getUser(),  
                 $reportDto->getCreationDate(),
                 $reportDto->getModificationDate()
  

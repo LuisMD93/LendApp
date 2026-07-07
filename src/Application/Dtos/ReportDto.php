@@ -13,7 +13,7 @@ class ReportDto implements JsonSerializable{
         public int $amount;
         public bool $lendStatus;
         public string $description;
-        public int $id_user;
+        public UserDto $user;
         public DateTime $modificationDate;
 
 
@@ -26,14 +26,14 @@ class ReportDto implements JsonSerializable{
             'amount' => $this->amount,
             'lendStatus' => $this->lendStatus,
             'description' => $this->description,
-            'id_user' => $this->id_user,
+            'user' => $this->user,
             'creationDate' => $this->creationDate->format('Y-m-d H:i:s'),
             'modificationDate' => $this->modificationDate->format('Y-m-d H:i:s'),
         ];
     }
 
 
-    public function __construct(int $id,string $loan_location,string $productName,int $amount,string $description   , bool $lendStatus,int $id_user     //RoleEnum $role = RoleEnum::UNDEFINED,
+    public function __construct(int $id,string $loan_location,string $productName,int $amount,string $description   , bool $lendStatus,UserDto $user     //RoleEnum $role = RoleEnum::UNDEFINED,
         ,DateTime $creationDate = new DateTime('0000-00-00 00:00:00'),
         DateTime $modificationDate = new DateTime('0000-00-00 00:00:00')) {
 
@@ -45,7 +45,7 @@ class ReportDto implements JsonSerializable{
         $this->description = $description;
         $this->creationDate = $creationDate;
         $this->modificationDate = $modificationDate;
-        $this->id_user = $id_user;
+        $this->user = $user;
 
         }
 
@@ -57,12 +57,12 @@ class ReportDto implements JsonSerializable{
             return $this->id;
         }
 
-        public function setIdUser(int $id_user) : void{
-        $this->id_user = $id_user;
+        public function setUser(UserDto $user) : void{
+        $this->user = $user;
         }
 
-        public function getIdUser() : int {
-            return $this->id_user;
+        public function getUser() : UserDto {
+            return $this->user;
         }
 
         public function setLoan_location(string $loan_location) : void {

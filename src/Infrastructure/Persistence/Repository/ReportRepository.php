@@ -48,8 +48,7 @@ class ReportRepository implements IReportRepository  {
                 $amount = $report->getAmount();
                 $lendStatus = $report->getLendStatus() ? true : false;
                 $description = $report->getDescription();
-                $id_user = $report->getIdUser();
-
+                $id_user = $report->getUser()->getId();
                 $creationDate = $report->getCreationDate()->format('Y-m-d H:i:s');
                 $modificationDate = $report->getModificationDate()->format('Y-m-d H:i:s');             
 

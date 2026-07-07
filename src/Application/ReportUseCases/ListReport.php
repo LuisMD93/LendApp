@@ -17,7 +17,7 @@ class ListReport {
     public function execute(): array {
         
             $report = $this->reportRepository->getAllReport();
-            echo '<pre>';var_dump($report); echo '</pre>';die;
+            #echo '<pre>';var_dump($report); echo '</pre>';die;
             $dataEntity = ReportMapper::fromArrayEntity($report);
             $dataDto = ReportMapper::fromArrayDto($dataEntity);
             return $dataDto;
