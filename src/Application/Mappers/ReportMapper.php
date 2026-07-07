@@ -77,7 +77,12 @@ class ReportMapper {
 
     public static function fromArrayDto(array $reports): array {
         $reportArrayDto = [];
-        foreach ($reports as $reportDto) {      
+        foreach ($reports as $reportDto) {  
+            
+        $userDto = new UserDto(
+            $reportDto->getUser()->getId(),
+            $reportDto->getUser()->getUsername()
+        );
           $reportArrayDto[] =  new ReportDto(
                 $reportDto->getId(),
                 $reportDto->getLoan_location(),
@@ -85,7 +90,7 @@ class ReportMapper {
                 $reportDto->getAmount(),
                 $reportDto->getDescription(),
                 $reportDto->getLendStatus(),
-                $reportDto->getUser(),  
+                $userDto,  
                 $reportDto->getCreationDate(),
                 $reportDto->getModificationDate()
  
