@@ -18,19 +18,17 @@ class Response{
    static function arrayParse($request) : array {
         
         $data = json_decode(file_get_contents($request), true); // Obtener datos JSON del cuerpo de la solicitud
-        var_dump($data);
-       // Response::If_startDate_Is_Empty($data);// si trabajas con fechas y  quieres ajustarlo a la fecha local
-              echo json_encode([
-                    "origin" => "Response",
-                    "status" => "ok",
-                    "location" => $data["location"] ,
-                    "cantidad" => $data["amount"] ,
-                    "descripcion" => $data["description"] ,
-                    "estado prestamo" => $data["lendStatus"] ,
-                    "nombre producto" => $data["name"],
-                    "userData" => $data["userData"]['id']
-                ]);
-         echo "---------------------------------------------------------";die;
+        //Response::If_startDate_Is_Empty($data);// si trabajas con fechas y  quieres ajustarlo a la fecha local
+        //       echo json_encode([
+        //             "origin" => "Response",
+        //             "status" => "ok",
+        //             "location" => $data["location"] ,
+        //             "cantidad" => $data["amount"] ,
+        //             "descripcion" => $data["description"] ,
+        //             "estado prestamo" => $data["lendStatus"] ,
+        //             "nombre producto" => $data["name"]
+        //         ]);
+        //  echo "---------------------------------------------------------";
         return $data;
     }
 
