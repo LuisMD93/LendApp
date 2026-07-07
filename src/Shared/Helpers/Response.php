@@ -28,7 +28,7 @@ class Response{
                     "descripcion" => $data["description"] ,
                     "estado prestamo" => $data["lendStatus"] ,
                     "nombre producto" => $data["name"],
-                    "data user" => $data["userData"]
+                    "userData" => $data["userData"]['id']
                 ]);
          echo "---------------------------------------------------------";die;
         return $data;
