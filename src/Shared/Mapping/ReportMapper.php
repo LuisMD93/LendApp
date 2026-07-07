@@ -3,6 +3,7 @@
 namespace Shared\Mapping;
 
 use Application\Dtos\ReportDto;
+use Application\Dtos\UserSummaryDto;
 
 use DateTime;
 
@@ -25,6 +26,8 @@ class ReportMapper {
 
     
     public static function fromArray(array $data) {
+
+        $user = new UserSummaryDto($data["userData"]['id'],$data["userData"]['username']);
         return new ReportDto(
                 $data["id"] ?? 0,
                 $data["location"],
@@ -32,7 +35,7 @@ class ReportMapper {
                 $data["amount"],    
                 $data["description"],    
                 $data["lendStatus"] , 
-                $data["userData"]['id'],  
+                $user,
                 new DateTime(),
                 new DateTime()  
         );
