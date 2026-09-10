@@ -131,18 +131,9 @@ switch ($router->method) {
                        
                 break;
             case 'user/login':
-            echo '<pre>';
-
-            var_dump($_POST);
-
-            echo "\n--- INPUT ---\n";
-
-            var_dump(file_get_contents('php://input'));
-
-            echo '</pre>';
-
-            exit;
-
+                echo '<pre>';
+                   var_dump($headers);
+                echo' </pre>';exit;
                 try {
                       return Response::success(
                                                 true,
