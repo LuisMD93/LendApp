@@ -132,7 +132,7 @@ switch ($router->method) {
                 break;
             case 'user/login':
                 echo '<pre>';
-                   print_r($headers);
+                   var_dump($headers);
                 echo' </pre>';exit;
                 try {
                       return Response::success(
