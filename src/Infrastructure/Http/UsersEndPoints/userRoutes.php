@@ -131,7 +131,9 @@ switch ($router->method) {
                        
                 break;
             case 'user/login':
-                
+                echo '<pre>';
+                   print_r($headers);
+                echo' </pre>';
                 try {
                       return Response::success(
                                                 true,
